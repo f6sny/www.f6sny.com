@@ -1,0 +1,29 @@
+
+html{
+    direction: rtl;
+}
+
+.custom-control {
+    padding-right: 1.5rem;
+    padding-left: revert;
+}
+.custom-control-inline {
+    margin-left: 1rem;
+    margin-right: revert;
+}
+
+.custom-control-input {
+    right: 0;
+    left:revert;
+}
+
+.custom-control-label::before{
+    right: -1.5rem;
+    left: revert;
+}
+.custom-control-label::before::after {
+    left: -1.5rem;
+    right:revert;
+    right: -1.5rem;
+    left: revert;
+}
