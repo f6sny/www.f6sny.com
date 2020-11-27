@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Header :counters="counters" />
+    <Header />
     <b-container>
       <b-row>
-        <b-col cols="8" class="py-3"><Nuxt /></b-col>
+        <b-col cols="8" class="py-3"><Nuxt keep-alive /></b-col>
         <b-col cols="4">
-          <Sidebar :counters="counters" />
+          <Sidebar />
           <Footer />
         </b-col>
       </b-row>
@@ -19,20 +19,31 @@
 </style>
 <script>
 export default {
-  data() {
+
+  computed: {
+    tags () {
+      return this.$store.state.tags;
+    },
+    counters () {
+      return this.$store.state.counters;
+    }
+  },
+  head() {
     return {
-      counters:{},
-    };
+      title: 'إضحك لين تفطس',
+    }
   },
   mounted() {
-    this.fetchData();
+    this.updateInitiail();
   },
-  methods:{
-    async fetchData(){
-      const data = await this.$axios.$get('http://localhost:8080/counters');
-      console.log(data);
-      this.counters = data;
+  methods: {
+    async updateInitiail(){
+      const tags = await this.$axios.$get('http://localhost:8080/tags')
+      const counters = await this.$axios.$get('http://localhost:8080/counters')
+      this.$store.commit('setCounters', counters)
+      this.$store.commit('setTags', tags)
     }
   }
+
 }
 </script>

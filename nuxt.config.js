@@ -1,10 +1,18 @@
 export default {
+  vue: {
+    config: {
+      productionTip: true,
+      devtools: false,
+      performance: true
+    }
+  },
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'فطسني | إضحك لين تفطس',
+    title: 'إضحك لين تفطس',
+    titleTemplate: '%s | فطسني',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -22,6 +30,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    '~/plugins/vue-observe-visibility.client.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -29,6 +38,15 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
+    ['@nuxtjs/moment', { 
+      locales: ['ar'],
+      defaultLocale: 'ar', 
+      timezone: true,
+      plugins: [
+        'moment-transform',
+      ]
+
+    }]
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)

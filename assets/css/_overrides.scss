@@ -21,9 +21,12 @@ html{
     right: -1.5rem;
     left: revert;
 }
-.custom-control-label::before::after {
-    left: -1.5rem;
-    right:revert;
+
+.custom-control-label::after{
     right: -1.5rem;
     left: revert;
+}
+
+h2 small{
+    font-size:0.6em;
 }

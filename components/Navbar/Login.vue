@@ -1,4 +1,6 @@
 <template>
+<li class="nav-item">
+  <b-button href="#" variant="link text-decoration-none text-white" v-b-modal.userModal><i class="fa fa-user fa-lg"></i></b-button>
   <b-modal id="userModal">
     <template #modal-title>Sign in or register</template>
     <template #modal-footer>
@@ -51,5 +53,7 @@
       </div>
     </form>
   </b-modal>
+</li>
+  
 </template>
 <script></script>
