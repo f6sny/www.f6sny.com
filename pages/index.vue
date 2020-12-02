@@ -26,14 +26,13 @@ export default {
   },
  
   async fetch() {
-    const data = await this.$axios.$get(`http://localhost:8080/jokes?_start=${this.jokes_retreived}`)
+    const data = await this.$axios.$get(`/jokes?_start=${this.jokes_retreived}`)
       this.jokes = this.jokes.concat(data);
       this.jokes_retreived += data.length;
   },
 
   methods: {
     lazyLoadJokes(isVisible) {
-      console.log('lazy load fired')
       if (isVisible) {
         if (this.current_page < 10) {
           this.current_page++

@@ -2,8 +2,8 @@
   <article class="p-md-3 p-1 mb-2" :id="joke.id">
         <b-row>
           <b-col cols="1" class="pl-0">
-            <div v-if="joke.author"> <b-img src="https://placehold.co/50" fluid-grow right alt="..." rounded="circle"></b-img> </div>
-            <div v-else> <b-img src="https://placehold.co/50" fluid-grow right alt="..." rounded="circle"></b-img> </div>
+            <b-avatar v-if="joke.author.display_picture" :src="joke.author.display_picture" size=""></b-avatar>
+            <b-avatar v-else size=""></b-avatar>
           </b-col>
           <b-col cols="11">
             <header class="mb-2">
@@ -12,7 +12,7 @@
               </div>
               <p class="p-0 m-0 small text-muted">
                 <time class=" pl-2" :datetime="joke.updated_at">منذ خمس دقائق</time>
-                <strong><a href="#">بواسطة مطحس </a></strong>
+                <strong>بواسطة <a v-if="joke.author" :href="`/u/${joke.author.username}`">{{ joke.author.username }} </a> <a href="#" v-else>مجهول</a></strong>
               </p>
             </header>
             <section class="">
@@ -26,16 +26,11 @@
               </footer>
             </section>
             <footer class="">
-              <ul class="list-inline p-0 m-0 col-12 text-muted small row text-center">
-                <li class="list-inline-item col">
-                  <i class="fal fa-comment"></i>
-                </li>
-                <li class="list-inline-item col">
-                  <i class="far fa-heart"></i>
-                </li>
-                <li class="list-inline-item col">
-                  <i class="fal fa-flag-alt"></i>
-                </li>
+              <ul class="list-inline p-0 m-0 col-12 text-muted small text-left">
+                <li class="list-inline-item"><i class="fas fa-comment"></i> (5 تعليقات)</li>
+                <li class="list-inline-item"><i class="fas fa-thumbs-up"></i></li>
+                <li class="list-inline-item"><i class="fas fa-thumbs-down"></i></li>
+                <li class="list-inline-item"><i class="fas fa-flag-alt"></i></li>
               </ul>
             </footer>
           </b-col>

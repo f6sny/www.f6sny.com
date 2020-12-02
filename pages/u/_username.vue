@@ -1,11 +1,23 @@
 <template>
   <div>
     <div v-if="user_info">
-        <h2>{{ username }}<br />
-        <small>{{ user_info.bio }}</small></h2>
+        <b-row>
+          <b-col cols="2">
+            <b-avatar v-if="user_info.display_picture" :src="user_info.display_picture" size="6rem"></b-avatar>
+            <b-avatar v-else size="6rem"></b-avatar>
+          </b-col>
+          <b-col cols="9">
+            <h2>{{ username }}<br />
+            <small>{{ user_info.bio }}</small></h2>
+          </b-col>
+        </b-row>
+        
         <hr />
         <section class="user_info" v-if="user_info">
-            <div class="row">
+          <b-tabs content-class="mt-3">
+            <b-tab title="معلومات عامة" active>
+
+              <div class="row">
                 <div class="col-sm-3">
                     <h6 class="mb-0">الإسم</h6>
                 </div>
@@ -43,16 +55,20 @@
                     {{ user_info.gender }}
                 </div>
             </div>
-            <hr>
+
+            </b-tab>
+            <b-tab title="النكت"><p>I'm the second tab</p></b-tab>
+            <b-tab title="التعليقات"><p>I'm a disabled tab!</p></b-tab>
+          </b-tabs>
+
+
+
+            
 
         </section>
-        <section v-else>
-        <h5>جاري سحب اليوزر..</h5>
-        </section>
+        <section v-else><h5>جاري سحب اليوزر..</h5></section>
     </div>
-    <div v-else>
-        Error: No User Found
-    </div>
+    <div v-else>Error: No User Found</div>
     
   </div>
 </template>
@@ -78,9 +94,9 @@ export default {
     mounted(){
     },
   async fetch() {
-      console.log(encodeURI(`http://localhost:8080/users-permissions/username/${ this.$route.params.username }`))
-    const user_data = await this.$axios.$get(encodeURI(`http://localhost:8080/users-permissions/username/${ this.$route.params.username }`))
-    //const tag_data = await this.$axios.$get(encodeURI(`http://localhost:8080/tags/slug/${ this.$route.params.tag }`))
+      console.log(encodeURI(`/users-permissions/username/${ this.$route.params.username }`))
+    const user_data = await this.$axios.$get(encodeURI(`/users-permissions/username/${ this.$route.params.username }`))
+    //const tag_data = await this.$axios.$get(encodeURI(`/tags/slug/${ this.$route.params.tag }`))
     user_data.gender = user_data.gender ? "ذكر" : "أنثى";
     this.user_info = user_data;
     console.log(user_data)

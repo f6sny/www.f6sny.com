@@ -1,16 +1,10 @@
 "vetur.format.defaultFormatterOptions": {
-    "js-beautify-html": {
-      "wrap_attributes": "auto"
-    },
-    "prettyhtml": {
-      "wrapAttributes": false,
-      "printWidth": 220
-    },
-    "prettier": {
-      "semi": false,
-      "singleQuote": true,
-      "eslintIntegration": true,
-      "trailingComma": "none",
-      "printWidth": 220
-    }
-  },
+    "js-beautify-html.wrap_attributes":  "auto",
+    "prettyhtml.wrapAttributes": false,
+    "prettyhtml.printWidth": 0,
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "prettier.eslintIntegration": true,
+    "prettier.trailingComma": "none",
+    "prettier.printWidth": 0,
+  }

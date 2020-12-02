@@ -27,9 +27,9 @@
             -->
 
             <Tags />
-            <!-- Hidden temporarly
+            
             <Login />
-            -->
+            
 
           </ul>
         </div>

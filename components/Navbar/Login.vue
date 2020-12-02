@@ -1,59 +1,26 @@
 <template>
-<li class="nav-item">
-  <b-button href="#" variant="link text-decoration-none text-white" v-b-modal.userModal><i class="fa fa-user fa-lg"></i></b-button>
-  <b-modal id="userModal">
-    <template #modal-title>Sign in or register</template>
-    <template #modal-footer>
-      <b-button type="submit" variant="warning">Register</b-button>
-      <b-button variant="primary">Login</b-button>
-      <b-button variant="secondary" @click="show = false">Close</b-button>
-    </template>
-    <form action="" method="post">
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            name="email"
-            id="email"
-            aria-describedby="emailHelp"
-            value=""
-          />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
-          <!-- @if(hasErrorFor('email'))
-              <div class="invalid-feedback">
-                {{ getErrorFor("email") }}
-              </div>
-              @endif -->
-        </div>
+  <li class="nav-item">
+    <b-button href="#" variant="link text-decoration-none text-white" v-b-modal.userModal><span v-if="isAuthenticated">
+      هلا {{ loggedInUser.username }}</span> <i class="fa fa-user fa-lg"></i>
+    </b-button>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            value=""
-          />
-          <!-- @if(hasErrorFor('password'))
-              <div class="invalid-feedback">
-                {{ getErrorFor("password") }}
-              </div>
-              @endif -->
-        </div>
-
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="rememberMe" />
-          <label class="form-check-label" for="rememberMe">Remember Me</label>
-        </div>
-      </div>
-    </form>
-  </b-modal>
-</li>
-  
+    <NotLoggedIn v-if="!isAuthenticated" />
+    <LoggedIn v-if="isAuthenticated" />
+  </li>
 </template>
-<script></script>
+<script>
+import { mapGetters } from "vuex";
+import NotLoggedIn from "@/components/Navbar/NotLoggedIn"
+import LoggedIn from "@/components/Navbar/LoggedIn"
+
+export default {
+  components: {
+    NotLoggedIn,
+    LoggedIn
+  },
+
+  computed: {
+    ...mapGetters(["isAuthenticated", "loggedInUser"]),
+  },
+};
+</script>

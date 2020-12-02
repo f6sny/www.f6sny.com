@@ -1,11 +1,9 @@
 <template>
   <aside id="sidebar">
     <section class="widget search py-3 mb-4">
-      <form>
         <div class="form-group">
-          <input class="form-control" type="text" id="search" name="search" value="" placeholder="ابحث بالموقع" />
+          <input class="form-control" v-model="search_keyword" v-on:keyup.enter="search" type="text" id="search" name="search" placeholder="ابحث بالموقع" />
         </div>
-      </form>
     </section>
 
     <section class="widget tags p-3 mb-4">
@@ -60,6 +58,9 @@
 <script>
 export default {
   computed: {
+    search_keyword (){
+      return this.$store.state.search_keywords;
+    },
     tags () {
       return this.$store.state.tags;
     },
@@ -70,7 +71,7 @@ export default {
   data(){
     return {
       comments: [],
-      
+      //search_word: "",
     }
 
   },
@@ -78,21 +79,19 @@ export default {
     this.fetchComments();
   },
   methods:{
+    search() {
+      this.$store.commit('search_keywords', this.search_keyword)
+      this.$router.push(`/s/${this.search_keyword}`);
+    },
     async fetchComments() {
       const data = await this.$axios.$get('http://localhost:8080/comments?_sort=id:DESC&_limit=10&status=true')
       this.comments = data;
     },
     randomSize(actual, max){
       const base = 1.5;
-      if((actual/max) > 0.8){
-        return 1 * base;
-      }
-      if((actual/max) > 0.5){
-        return 0.8 * base;
-      }
-      else{
-        return 0.6 * base;
-      }
+      if((actual/max) > 0.8) return 1 * base;
+      if((actual/max) > 0.5) return 0.8 * base;
+      else return 0.6 * base;
     }
   }
 }

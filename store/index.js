@@ -1,4 +1,5 @@
 export const state = () => ({
+  search_keywords: '',
 	counters: {
         "total_jokes": 0,
         "pending_jokes": 0,
@@ -9,6 +10,16 @@ export const state = () => ({
       },
 	tags: {},
 })
+
+export const getters = {
+    isAuthenticated(state) {
+    return state.auth.loggedIn;
+    },
+   
+    loggedInUser(state) {
+    return state.auth.user;
+    },
+};
 
 export const mutations = {
     async setCounters(state, counters) {
