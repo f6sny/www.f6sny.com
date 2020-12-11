@@ -25,7 +25,7 @@
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
                   <li v-bind:key="tag.id" v-for="tag in joke.tags" class="list-inline-item">
-                    <a href="#">#{{ `${tag.name}` }}</a>
+                    <a href="#">#{{ `${tag.title}` }}</a>
                   </li>
                 </ul>
               </footer>

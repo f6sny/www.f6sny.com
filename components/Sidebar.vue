@@ -2,7 +2,7 @@
   <aside id="sidebar">
     <section class="widget search py-3 mb-4">
         <div class="form-group">
-          <input class="form-control" v-model="search_keyword" v-on:keyup.enter="search" type="text" id="search" name="search" placeholder="ابحث بالموقع" />
+          <input class="form-control" v-model="search_word" v-on:keyup.enter="search" type="text" id="search" name="search" placeholder="ابحث بالموقع" />
         </div>
     </section>
 
@@ -11,7 +11,7 @@
       <hr class="my-1" />
       <ul v-if="tags" style="" class="list-inline p-0 m-0 text-center">
         <li v-bind:key="tag.id" v-for="tag in tags" :style="`font-size: ${ randomSize(tag.jokes,tag.jokes_max) }em;`" class="list-inline-item">
-          <NuxtLink :to="`/t/${tag.name}`" :style="`color: ${tag.fore_color}`">{{ `#${tag.name}` }}</NuxtLink>  
+          <NuxtLink :to="`/t/${tag.title}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
           
           </li>
       </ul>
@@ -36,7 +36,7 @@
       <hr class="my-1" />
       <ul class="list-unstyled">
         <li v-bind:key="comment.id" v-for="comment in comments" >
-          <b-link href="#" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.author">{{ comment.author.username }}</strong> {{ comment.content }}</b-link>
+          <b-link href="#" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
         </li>
       </ul>
     </section>
@@ -58,7 +58,7 @@
 <script>
 export default {
   computed: {
-    search_keyword (){
+    search_keyword (){  
       return this.$store.state.search_keywords;
     },
     tags () {
@@ -71,7 +71,7 @@ export default {
   data(){
     return {
       comments: [],
-      //search_word: "",
+      search_word: "",
     }
 
   },
@@ -80,11 +80,11 @@ export default {
   },
   methods:{
     search() {
-      this.$store.commit('search_keywords', this.search_keyword)
-      this.$router.push(`/s/${this.search_keyword}`);
+        this.$store.commit('setSearchKeyword', this.search_word)
+        this.$router.push(`/s/${this.search_word}`);
     },
     async fetchComments() {
-      const data = await this.$axios.$get('http://localhost:8080/comments?_sort=id:DESC&_limit=10&status=true')
+      const data = await this.$axios.$get('http://localhost:8080/globalcalls/getLatestComments')
       this.comments = data;
     },
     randomSize(actual, max){

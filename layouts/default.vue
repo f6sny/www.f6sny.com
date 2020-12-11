@@ -33,17 +33,5 @@ export default {
       title: 'إضحك لين تفطس',
     }
   },
-  mounted() {
-    this.updateInitiail();
-  },
-  methods: {
-    async updateInitiail(){
-      const tags = await this.$axios.$get('http://localhost:8080/tags')
-      const counters = await this.$axios.$get('http://localhost:8080/counters')
-      this.$store.commit('setCounters', counters)
-      this.$store.commit('setTags', tags)
-    }
-  }
-
 }
 </script>

@@ -20,7 +20,7 @@
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
                   <li v-bind:key="tag.id" v-for="tag in joke.tags" class="list-inline-item" >
-                    <NuxtLink :to="`/t/${tag.name}`">{{ `#${tag.name}` }}</NuxtLink>  
+                    <NuxtLink :to="`/t/${tag.title}`">{{ `#${tag.title}` }}</NuxtLink>  
                   </li>
                 </ul>
               </footer>

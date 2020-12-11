@@ -4,10 +4,14 @@
 		<h2>بحث عن "{{ this.search_word }}"</h2>
 		<hr />
 		<section class="jokes search_results" v-if="results.length">
-		<joke-block v-for="(joke, i) in results" :key="joke.id" v-observe-visibility="i === results.length - 1 ? lazyLoadJokes : false" :joke="joke" />
+		    <joke-block v-for="(joke, i) in results" :key="joke.id" v-observe-visibility="i === results.length - 1 ? lazyLoadJokes : false" :joke="joke" />
 		</section>
-		<section v-else-if="results.length == 0"><b-alert show variant="danger">لم يتم إيجاد شي يطابق بحثك..</b-alert></section>
-		<section v-else><h5>جاري سحب النكت..</h5></section>
+		<section v-else-if="results.length == 0">
+            <b-alert show variant="danger">لم يتم إيجاد شي يطابق بحثك..</b-alert>
+        </section>
+		<section v-else>
+            <h5>جاري سحب النكت..</h5>
+        </section>
 	</div>
 	<div v-else>Error: No results Found</div>
   </div>
@@ -25,8 +29,8 @@ export default {
 	},
 async fetch() {
 	const data = await this.$axios.$get(encodeURI(`/jokes?_q=${this.search_word}&_start=${this.results_retreived}`))
-	  this.results = this.results.concat(data);
-	  this.results_retreived += data.length;
+    this.results = this.results.concat(data);
+    this.results_retreived += data.length;
   },
 
   methods: {

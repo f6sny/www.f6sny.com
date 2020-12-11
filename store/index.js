@@ -27,5 +27,20 @@ export const mutations = {
 	},
 	async setTags(state, tags) {
 		state.tags = tags;
-	},
+    },
+    async setSearchKeyword(state, keyword) {
+		state.search_keywords = keyword;
+    },
+    
+    
+}
+
+
+export const actions ={
+    async nuxtServerInit({commit}){
+        const tags = await this.$axios.$get('http://localhost:8080/tags') // will never change on session
+        const counters = await this.$axios.$get('http://localhost:8080/globalcalls/counters') // might change on session
+        commit('setTags', tags);
+        commit('setCounters', counters);
+    }
 }
