@@ -6,7 +6,7 @@
         <small>{{ tag_info.description }}</small>
         <br />
         <small class="text-muted"
-          >يوجد بالموقع 99999 نكتة تحت تصنيف #{{ tag }}</small
+          >يوجد بالموقع {{ tag_info.jokes }} نكتة تحت تصنيف #{{ tag }}</small
         >
       </h2>
       <hr />
@@ -19,7 +19,7 @@
         />
       </section>
       <section v-else>
-        <h5>جاري سحب النكت..</h5>
+        <b-alert variant="warning" show><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> جاري سحب النكت..</b-alert>
       </section>
     </div>
     <div v-else>Error: No Jokes Found</div>
@@ -36,7 +36,8 @@ export default {
     return {
       tag: this.$route.params.tag,
       tag_info: {
-          description: "",
+          description: " ",
+          jokes: 99999,
       },
       jokes: [],
       current_page: 1,
@@ -59,11 +60,12 @@ export default {
   },
   mounted() {},
   async fetch() {
-    const joke_data = await this.$axios.$get(encodeURI(`/tags/jokes/${this.$route.params.tag}?_start=${this.jokes_retreived}`));
-    const tag_data = await this.$axios.$get(encodeURI(`/tags/slug/${this.$route.params.tag}`));
+    const joke_data = await this.$axios.$get(encodeURI(`/jokes?tags.slug=${this.$route.params.tag}&_start=${this.jokes_retreived}`));
     this.jokes = this.jokes.concat(joke_data);
     this.jokes_retreived += joke_data.length;
-    this.tag_info = tag_data;
+
+    const tag_data = await this.$axios.$get(encodeURI(`/tags?slug=${this.$route.params.tag}`));
+    this.tag_info = tag_data[0];
   },
 
   methods: {

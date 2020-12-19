@@ -7,9 +7,6 @@
           </b-col>
           <b-col cols="11">
             <header class="mb-2">
-              <div class="float-left small">
-                <i class="far fa-chevron-down"></i>
-              </div>
               <p class="p-0 m-0 small text-muted">
                 <time class=" pl-2" :datetime="joke.updated_at">منذ خمس دقائق</time>
                 <strong>بواسطة <a v-if="joke.author" :href="`/u/${joke.author.username}`">{{ joke.author.username }} </a> <a href="#" v-else>مجهول</a></strong>
@@ -27,10 +24,10 @@
             </section>
             <footer class="">
               <ul class="list-inline p-0 m-0 col-12 text-muted small text-left">
-                <li class="list-inline-item"><i class="fas fa-comment"></i> (5 تعليقات)</li>
-                <li class="list-inline-item"><i class="fas fa-thumbs-up"></i></li>
-                <li class="list-inline-item"><i class="fas fa-thumbs-down"></i></li>
-                <li class="list-inline-item"><i class="fas fa-flag-alt"></i></li>
+                <li title="خمس تعليقات" class="list-inline-item"><i class="fas fa-comment"></i></li>
+                <li :title="votes_up + ' تصويتات للأعلى'" class="list-inline-item"><i class="fas fa-thumbs-up"></i></li>
+                <li :title="votes_down + ' تصويتات للأسفل'" class="list-inline-item"><i class="fas fa-thumbs-down"></i></li>
+                <li title="تبليغ" class="list-inline-item"><i class="fas fa-flag-alt"></i></li>
               </ul>
             </footer>
           </b-col>
@@ -45,7 +42,22 @@ export default {
             type: Object,
             default: null,
         }
-    }
+    },
+    data() {
+        return {
+            votes_up: 0,
+            votes_down: 0,
+        };
+    },
+    mounted() {
+        if(this.joke.votes){
+            this.joke.votes.forEach(element => {
+                if(element.value =="up") this.votes_up++;
+                if(element.value =="down") this.votes_down++;
+            });
+        }
+        
+    },
 }
 </script>
 

@@ -20,11 +20,11 @@
             <!-- Hidden temporarly
             <NewJoke />
              
-
+ -->
             <li class="nav-item">
-              <b-link to="moderate" class="nav-link text-white"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-link>
+              <b-link to="/moderate" class="nav-link text-white"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-link>
             </li>
-            -->
+           
 
             <Tags />
             
