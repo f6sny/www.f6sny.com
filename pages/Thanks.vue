@@ -14,13 +14,3 @@
       <p>For sticking around during the development and testing of the project and guiding certain paths of programming activities</p>
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>

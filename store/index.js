@@ -1,23 +1,23 @@
 export const state = () => ({
-  search_keywords: '',
-	counters: {
+    search_keywords: '',
+    counters: {
         "total_jokes": 0,
         "pending_jokes": 0,
         "deleted_jokes": 0,
         "comments": 0,
         "users": 0,
         "visits": 0
-      },
-	tags: {},
+        },
+    tags: {},
 })
 
 export const getters = {
     isAuthenticated(state) {
-    return state.auth.loggedIn;
+        return state.auth.loggedIn;
     },
    
     loggedInUser(state) {
-    return state.auth.user;
+        return state.auth.user;
     },
 };
 
@@ -30,17 +30,14 @@ export const mutations = {
     },
     async setSearchKeyword(state, keyword) {
 		state.search_keywords = keyword;
-    },
-    
-    
+    },  
 }
-
 
 export const actions ={
     async nuxtServerInit({commit}){
-        const tags = await this.$axios.$get('http://localhost:8080/tags') // will never change on session
-        const counters = await this.$axios.$get('http://localhost:8080/globalcalls/counters') // might change on session
-        commit('setTags', tags);
-        commit('setCounters', counters);
+        commit('setTags', await this.$f6snyApi.getTags());
+    },
+    async updateCounters({commit}){
+        commit('setCounters', await this.$f6snyApi.getCounters());
     }
 }

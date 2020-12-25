@@ -28,7 +28,7 @@ export default {
 		}
 	},
 async fetch() {
-	const data = await this.$axios.$get(encodeURI(`/jokes?_q=${this.search_word}&_start=${this.results_retreived}`))
+	const data = await this.$f6snyApi.searchJokesByKeywords(this.search_word, this.results_retreived)
     this.results = this.results.concat(data);
     this.results_retreived += data.length;
   },

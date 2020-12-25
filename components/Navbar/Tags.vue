@@ -4,8 +4,7 @@
             <i class="fa fa-sitemap fa-lg"></i>
         </template>
 
-        <b-dropdown-item href="#" v-bind:key="tag.id" v-for="tag in tags" >
-          <NuxtLink :to="`/t/${tag.title}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
+        <b-dropdown-item :to="`/t/${tag.slug}`" v-bind:key="tag.id" v-for="tag in tags" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}
         </b-dropdown-item>
     </b-nav-item-dropdown>
 </template>

@@ -2,7 +2,7 @@
   <article class="p-md-3 p-1 mb-2" :id="joke.id">
         <b-row>
           <b-col cols="1" class="pl-0">
-            <b-avatar v-if="joke.author.display_picture" :src="joke.author.display_picture" size=""></b-avatar>
+            <b-avatar v-if="joke.author.display_picture" :src="(joke.author.display_picture)?joke.author.display_picture : ``" size=""></b-avatar>
             <b-avatar v-else size=""></b-avatar>
           </b-col>
           <b-col cols="11">
@@ -17,7 +17,7 @@
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
                   <li v-bind:key="tag.id" v-for="tag in joke.tags" class="list-inline-item" >
-                    <NuxtLink :to="`/t/${tag.title}`">{{ `#${tag.title}` }}</NuxtLink>  
+                    <NuxtLink :to="`/t/${tag.slug}`">{{ `#${tag.title}` }}</NuxtLink>  
                   </li>
                 </ul>
               </footer>

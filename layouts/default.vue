@@ -3,12 +3,16 @@
     <Header />
     <b-container>
       <b-row>
-        <b-col cols="8" class="py-3"><Nuxt keep-alive /></b-col>
-        <b-col cols="4">
+        <b-col md="8" class="py-3"><Nuxt keep-alive /></b-col>
+        <b-col md="4">
           <Sidebar />
           <Footer />
         </b-col>
       </b-row>
+
+        <NewJokeModal />
+        <NotLoggedIn v-if="!isAuthenticated" />
+        <LoggedIn v-if="isAuthenticated" />
     </b-container>
     
   </div>
@@ -18,9 +22,19 @@
 
 </style>
 <script>
-export default {
+import { mapGetters } from "vuex";
+import NotLoggedIn from "@/components/Navbar/NotLoggedIn"
+import LoggedIn from "@/components/Navbar/LoggedIn"
+import NewJokeModal from '@/components/Navbar/NewJokeModal';
 
+export default {
+    components: {
+    NewJokeModal,
+    NotLoggedIn,
+    LoggedIn
+  },
   computed: {
+      ...mapGetters(["isAuthenticated", "loggedInUser"]),
     tags () {
       return this.$store.state.tags;
     },

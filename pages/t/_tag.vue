@@ -28,6 +28,7 @@
 
 <script>
 import JokeBlock from "~/components/blocks/JokeBlock.vue";
+
 export default {
   components: {
     JokeBlock,
@@ -60,12 +61,13 @@ export default {
   },
   mounted() {},
   async fetch() {
-    const joke_data = await this.$axios.$get(encodeURI(`/jokes?tags.slug=${this.$route.params.tag}&_start=${this.jokes_retreived}`));
+    const joke_data = await this.$f6snyApi.getTagJokesBySlug(this.$route.params.tag, this.jokes_retreived) 
     this.jokes = this.jokes.concat(joke_data);
     this.jokes_retreived += joke_data.length;
 
-    const tag_data = await this.$axios.$get(encodeURI(`/tags?slug=${this.$route.params.tag}`));
+    const tag_data = await this.$f6snyApi.getTagBySlug(this.$route.params.tag);
     this.tag_info = tag_data[0];
+    console.log(this.tag_info);
   },
 
   methods: {

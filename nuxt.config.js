@@ -42,7 +42,8 @@ export default {
 
 	// Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
 	plugins: [
-		'~/plugins/vue-observe-visibility.client.js'
+        '~/plugins/vue-observe-visibility.client',
+        '~/plugins/repository'
 	],
 
 	// Auto import components (https://go.nuxtjs.dev/config-components)
@@ -75,7 +76,8 @@ export default {
 
 	// Axios module configuration (https://go.nuxtjs.dev/config-axios)
 	axios: {
-		baseURL: process.env.API_AUTH_URL
+        baseURL: process.env.API_AUTH_URL,
+        withCredentials: true
 	},
 
 	// Build Configuration (https://go.nuxtjs.dev/config-build)
@@ -86,8 +88,10 @@ export default {
 	 */
 	auth: {
 		strategies: {
+            
 			local: {
 				endpoints: {
+                    
 					login: {
 						url: 'auth/local',
 						method: 'post',

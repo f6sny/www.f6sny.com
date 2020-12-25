@@ -17,6 +17,7 @@ export default {
   components: {
     JokeBlock,
   },
+  
   data() {
     return {
       jokes: [],
@@ -26,7 +27,7 @@ export default {
   },
  
   async fetch() {
-    const data = await this.$axios.$get(`/jokes?_start=${this.jokes_retreived}`)
+    const data = await this.$f6snyApi.getJokes(this.jokes_retreived);
       this.jokes = this.jokes.concat(data);
       this.jokes_retreived += data.length;
   },
@@ -41,9 +42,5 @@ export default {
       }
     }
   }
-
-};</script>
-
-<style>
-
-</style>
+};
+</script>

@@ -4,34 +4,17 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-xl">
         <a class="navbar-brand" href="/"></a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+          aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <!-- Hidden temporarly
-            <NewJoke />
-             
- -->
-            <li class="nav-item">
-              <b-link to="/moderate" class="nav-link text-white"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-link>
-            </li>
-           
-
-            <Tags />
-            
-            <Login />
-            
-
-          </ul>
+            <b-navbar-nav class="mr-auto mt-2 mt-lg-0">
+                <b-nav-item href="#" title="عندك نكتة؟" v-b-modal.jokeModal><i class="fas fa-plus"></i></b-nav-item>
+                <b-nav-item to="/moderate"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters.pending_jokes" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-nav-item>
+                <Tags />
+                <Login />
+            </b-navbar-nav>
         </div>
       </div>
     </nav>
@@ -40,17 +23,17 @@
 
 <script>
 import  Tags  from "@/components/Navbar/Tags";
+import { mapState } from 'vuex';
+
 export default {
   components:{
     Tags,
   },
-  computed: {
-    tags () {
-      return this.$store.state.tags;
-    },
-    counters () {
-      return this.$store.state.counters;
-    }
+  computed: mapState(['counters','tags']),
+  mounted(){
+        console.log('mounted navbar')
+        this.$store.dispatch('updateCounters');
   }
+
 }
 </script>

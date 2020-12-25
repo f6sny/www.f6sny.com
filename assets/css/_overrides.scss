@@ -3,6 +3,18 @@ html{
     direction: rtl;
 }
 
+h2 small{
+    font-size:0.6em;
+}
+
+.nav {
+    padding-left: revert;
+    padding-right: 0;
+
+}
+
+
+
 .custom-control {
     padding-right: 1.5rem;
     padding-left: revert;
@@ -27,12 +39,23 @@ html{
     left: revert;
 }
 
-h2 small{
-    font-size:0.6em;
+.form-check-input {
+	margin-left: 0;
+	margin-right: -1.25rem;
 }
 
-.nav {
-    padding-left: revert;
-    padding-right: 0;
+.form-check {
+	padding-left: 0;
+	padding-right: 1.25rem;
+}
 
+.form-check-inline {
+	padding-right: 0;
+	margin-right: 0;
+	margin-left: .75rem;
+}
+
+
+.custom-checkbox.b-custom-control-sm, .input-group-sm .custom-checkbox{
+    padding-left: inherit;
 }

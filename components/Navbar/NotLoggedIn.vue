@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="userModal">
+    <b-modal id="userModal">
       <template #modal-title>إقلط</template>
       <template #modal-footer>
         <b-link class="ml-auto" @click="alternate_mode" href="#"><span v-if="registeration_mode">عندك عضوية؟ طق هنا</span><span v-else>تبي تسجل معنا؟ طق هنا</span></b-link>
@@ -110,15 +110,16 @@ export default {
     async login() {
       this.error = null;
       try {
-        //this.$axios.setToken(false);
         await this.$auth.loginWith("local", {
           data: {
           identifier: this.identifier,
           password: this.password,
           },
         });
+        this.$store.dispatch('updateCounters');
         this.$router.push("/");
-      } catch (e) {
+      } 
+      catch (e) {
         this.error = e.response.data.message[0].messages[0].message;
       }
     },

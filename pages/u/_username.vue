@@ -60,11 +60,6 @@
             <b-tab title="النكت"><p>I'm the second tab</p></b-tab>
             <b-tab title="التعليقات"><p>I'm a disabled tab!</p></b-tab>
           </b-tabs>
-
-
-
-            
-
         </section>
         <section v-else><h5>جاري سحب اليوزر..</h5></section>
     </div>
@@ -94,14 +89,12 @@ export default {
     mounted(){
     },
   async fetch() {
-      console.log(encodeURI(`/users-permissions/username/${ this.$route.params.username }`))
-    const user_data = await this.$axios.$get(encodeURI(`/users-permissions/username/${ this.$route.params.username }`))
-    //const tag_data = await this.$axios.$get(encodeURI(`/tags/slug/${ this.$route.params.tag }`))
-    user_data.gender = user_data.gender ? "ذكر" : "أنثى";
-    this.user_info = user_data;
-    console.log(user_data)
-    //this.jokes_retreived += joke_data.length;
-    //this.tag_info = tag_data;
+        const user_data = await this.$f6snyApi.getUserByUsername(this.$route.params.username)
+        user_data.gender = user_data.gender ? "ذكر" : "أنثى";
+        this.user_info = user_data;
+        console.log(user_data)
+        //this.jokes_retreived += joke_data.length;
+        //this.tag_info = tag_data;
   },
 
   methods: {

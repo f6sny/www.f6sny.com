@@ -11,7 +11,7 @@
       <hr class="my-1" />
       <ul v-if="tags" style="" class="list-inline p-0 m-0 text-center">
         <li v-bind:key="tag.id" v-for="tag in tags" :style="`font-size: ${ randomSize(tag.jokes,tag.jokes_max) }em;`" class="list-inline-item">
-          <NuxtLink :to="`/t/${tag.title}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
+          <NuxtLink :to="`/t/${tag.slug}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
           
           </li>
       </ul>
@@ -36,7 +36,7 @@
       <hr class="my-1" />
       <ul class="list-unstyled">
         <li v-bind:key="comment.id" v-for="comment in comments" >
-          <b-link href="#" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
+          <b-link :to="`/j/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
         </li>
       </ul>
     </section>
@@ -84,8 +84,8 @@ export default {
         this.$router.push(`/s/${this.search_word}`);
     },
     async fetchComments() {
-      const data = await this.$axios.$get('http://localhost:8080/globalcalls/getLatestComments')
-      this.comments = data;
+      this.comments = await this.$f6snyApi.getLatestComments();
+      console.log(this.comments[0].related[0].slug)
     },
     randomSize(actual, max){
       const base = 1.5;
