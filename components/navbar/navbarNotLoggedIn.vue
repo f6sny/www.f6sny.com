@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="userModal">
+    <b-modal ref="userModal" id="userModal">
       <template #modal-title>إقلط</template>
       <template #modal-footer>
         <b-link class="ml-auto" @click="alternate_mode" href="#"><span v-if="registeration_mode">عندك عضوية؟ طق هنا</span><span v-else>تبي تسجل معنا؟ طق هنا</span></b-link>
@@ -69,6 +69,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   data() {
     return {
@@ -110,12 +111,14 @@ export default {
     async login() {
       this.error = null;
       try {
-        await this.$auth.loginWith("local", {
+        let response = await this.$auth.loginWith("local", {
           data: {
           identifier: this.identifier,
           password: this.password,
           },
         });
+        console.log(response)
+        Cookie.set('auth', response.jwt)
         this.$store.dispatch('updateCounters');
         this.$router.push("/");
       } 

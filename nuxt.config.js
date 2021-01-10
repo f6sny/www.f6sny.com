@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 export default {
+    ssr: false, // Disable Server Side rendering
 	vue: {
 		config: {
 			productionTip: true,
@@ -15,24 +16,9 @@ export default {
 	head: {
 		title: 'إضحك لين تفطس',
 		titleTemplate: '%s | فطسني',
-		meta: [{
-				charset: 'utf-8'
-			},
-			{
-				name: 'viewport',
-				content: 'width=device-width, initial-scale=1'
-			},
-			{
-				hid: 'description',
-				name: 'description',
-				content: ''
-			}
-		],
-		link: [{
-			rel: 'icon',
-			type: 'image/x-icon',
-			href: '/favicon.ico'
-		}]
+		meta: [{charset: 'utf-8'}, { name: 'viewport', content: 'width=device-width, initial-scale=1'},{
+				hid: 'description', name: 'description', content: ''}],
+		link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
 	},
 
 	// Global CSS (https://go.nuxtjs.dev/config-css)
@@ -47,7 +33,15 @@ export default {
 	],
 
 	// Auto import components (https://go.nuxtjs.dev/config-components)
-	components: true,
+    components: true,
+    components: {
+        dirs:[
+            '~/components', {
+                path: '~/components/navbar',
+                prefix: 'Navbar'
+            }
+        ]
+    },
 
 	// Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
 	buildModules: [
@@ -71,8 +65,14 @@ export default {
 		// Doc: https://github.com/nuxt-community/dotenv-module
 		'@nuxtjs/dotenv',
 		// Authentication library
-		'@nuxtjs/auth'
-	],
+        '@nuxtjs/auth',
+        // Markdown Viewer
+        '@nuxtjs/markdownit'
+    ],
+    markdownit: {
+        injected: true
+      },
+    
 
 	// Axios module configuration (https://go.nuxtjs.dev/config-axios)
 	axios: {
@@ -88,10 +88,8 @@ export default {
 	 */
 	auth: {
 		strategies: {
-            
 			local: {
 				endpoints: {
-                    
 					login: {
 						url: 'auth/local',
 						method: 'post',
@@ -104,7 +102,7 @@ export default {
 					},
 					logout: false
 				}
-			}
+            },           
 		}
 	},
 

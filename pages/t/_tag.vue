@@ -5,18 +5,11 @@
         #{{ tag }}<br />
         <small>{{ tag_info.description }}</small>
         <br />
-        <small class="text-muted"
-          >يوجد بالموقع {{ tag_info.jokes }} نكتة تحت تصنيف #{{ tag }}</small
-        >
+        <small class="text-muted">عندنا {{ tag_info.jokes }} نكتة تحت تصنيف #{{ tag }}</small>
       </h2>
       <hr />
       <section class="jokes tags" v-if="jokes.length">
-        <joke-block
-          v-for="(joke, i) in jokes"
-          :key="joke.id"
-          v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false"
-          :joke="joke"
-        />
+        <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
       </section>
       <section v-else>
         <b-alert variant="warning" show><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> جاري سحب النكت..</b-alert>
@@ -27,18 +20,14 @@
 </template>
 
 <script>
-import JokeBlock from "~/components/blocks/JokeBlock.vue";
 
 export default {
-  components: {
-    JokeBlock,
-  },
   data() {
     return {
       tag: this.$route.params.tag,
       tag_info: {
           description: " ",
-          jokes: 99999,
+          jokes: "----",
       },
       jokes: [],
       current_page: 1,
@@ -61,22 +50,26 @@ export default {
   },
   mounted() {},
   async fetch() {
-    const joke_data = await this.$f6snyApi.getTagJokesBySlug(this.$route.params.tag, this.jokes_retreived) 
-    this.jokes = this.jokes.concat(joke_data);
-    this.jokes_retreived += joke_data.length;
-
-    const tag_data = await this.$f6snyApi.getTagBySlug(this.$route.params.tag);
-    this.tag_info = tag_data[0];
-    console.log(this.tag_info);
+    await this.getJokes();
+    await this.getTag();
   },
 
   methods: {
+      async getJokes(){
+        const joke_data = await this.$f6snyApi.getTagJokesBySlug(this.$route.params.tag, this.jokes_retreived) 
+        this.jokes = this.jokes.concat(joke_data);
+        this.jokes_retreived += joke_data.length;
+      },
+      async getTag(){
+        const tag_data = await this.$f6snyApi.getTagBySlug(this.$route.params.tag);
+        this.tag_info = tag_data[0];
+      },
     lazyLoadJokes(isVisible) {
       console.log("lazy load fired");
       if (isVisible) {
         if (this.current_page < 10) {
           this.current_page++;
-          this.$fetch();
+          this.getJokes();
         }
       }
     },

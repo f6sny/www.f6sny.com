@@ -45,8 +45,7 @@
       <h4>روابط مهمة</h4>
       <hr class="my-1" />
       <ul class="list-unstyled text-small">
-        <li><b-link href="#"><i class="fas fa-question-circle"></i> ليه ماطلعت نكتتي</b-link></li>
-        <li><b-link href="#"><i class="fas fa-question-circle"></i> النكت حلال ولا حرام</b-link></li>
+        <li v-bind:key="page.id" v-for="page in pages"><b-link :to="`/p/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</b-link></li>  
         <li><b-link href="#"><i class="fas fa-exclamation-triangle"></i> القوانين والأحكام</b-link></li>
         <li><b-link href="https://github.com/Mo9a7i"><i class="fab fa-github"></i> المشروع في GitHub</b-link></li>
         <li><b-link href="#"><i class="fas fa-envelope"></i> إتصل بنا</b-link></li>
@@ -72,20 +71,26 @@ export default {
     return {
       comments: [],
       search_word: "",
+      pages: [],
     }
 
   },
   mounted() {
     this.fetchComments();
+    this.fetchPages();
   },
   methods:{
     search() {
         this.$store.commit('setSearchKeyword', this.search_word)
         this.$router.push(`/s/${this.search_word}`);
     },
+    async fetchPages() {
+        const page_data = await this.$f6snyApi.getPages();
+        console.log(page_data)
+        this.pages = page_data;
+    },
     async fetchComments() {
       this.comments = await this.$f6snyApi.getLatestComments();
-      console.log(this.comments[0].related[0].slug)
     },
     randomSize(actual, max){
       const base = 1.5;

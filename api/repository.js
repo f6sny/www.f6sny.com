@@ -8,6 +8,7 @@ export default $axios => () => ({
     // ! Jokes Calls #
     // ! #############
     getJokes(start){
+        console.log(`Getting jokes starting from ${start}`)
         return $axios.$get(`/jokes?_start=${start}`)
     },
 
@@ -18,6 +19,7 @@ export default $axios => () => ({
     getJokeByID(id){
         return $axios.$get(`/jokes/${id}`)
     },
+    
 
     searchJokesByKeywords(keywords, start){
         return $axios.$get(encodeURI(`/jokes?_q=${keywords}&_start=${start}`))
@@ -29,6 +31,16 @@ export default $axios => () => ({
 
     postJoke(joke){
         return $axios.$post(`/jokes`,joke);
+    },
+
+    // ! Pages Calls #
+    // ! #############
+    getPages(){
+        return $axios.$get(`/pages`)
+    },
+
+    getPageBySlug(slug){
+        return $axios.$get(encodeURI(`/pages?slug=${slug}`))
     },
 
 
@@ -59,12 +71,12 @@ export default $axios => () => ({
 
     getComments(id){
         console.log(id)
-        return $axios.$get(`/comments/jokes:${id}`)
+        return $axios.$get(`/comments/jokes:${id}?_sort=id:desc`)
         
     },
 
-    postComment(){
-        return $axios.$get('/globalcalls/getLatestComments')
+    postComment(comment, joke_id){
+        return $axios.$post(`/comments/jokes:${joke_id}`,comment)
     },
 
 
@@ -76,8 +88,24 @@ export default $axios => () => ({
     
     // ! Users Calls #
     // ! #############
+    getCurrentUser(){
+        return $axios.$get(`/users/me`)
+    },
+
     getUserByUsername(username){
-        return $axios.$get(encodeURI(`/users-permissions/username/${ username }`))
+        return $axios.$get(encodeURI(`/users?username=${ username }`))
+    },
+
+    getUserJokesByID(user_id, start){
+        return $axios.$get(encodeURI(`/jokes?author=${ user_id }&_sort=id:desc&_start=${start}`))
+    },
+
+    getUserCommentsByID(user_id){
+        return $axios.$get(encodeURI(`/users/${ username }/comments`))
+    },
+
+    updateUserData(user_id, user_data){
+        return $axios.$put(`/users/${user_id}`, user_data)
     },
 
 

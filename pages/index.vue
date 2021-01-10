@@ -3,7 +3,7 @@
     <h2>كل النكت</h2>
     <hr />
     <section class="jokes" v-if="jokes.length">
-      <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke" />
+      <joke-block v-for="(joke, i) in jokes" :key="`joke-${joke.id}`" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke" />
     </section>
     <section v-else>
       <h5>جاري سحب النكت..</h5>
@@ -27,8 +27,9 @@ export default {
   },
  
   async fetch() {
-    const data = await this.$f6snyApi.getJokes(this.jokes_retreived);
+    const data = await this.$f6snyApi.getJokes(((this.jokes_retreived)? this.jokes_retreived + 1 : this.jokes_retreived));
       this.jokes = this.jokes.concat(data);
+      console.log(`Got ${data.length} jokes, adding to ${this.jokes_retreived} total should be ${data.length + this.jokes_retreived}`)
       this.jokes_retreived += data.length;
   },
 

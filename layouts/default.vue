@@ -10,9 +10,9 @@
         </b-col>
       </b-row>
 
-        <NewJokeModal />
-        <NotLoggedIn v-if="!isAuthenticated" />
-        <LoggedIn v-if="isAuthenticated" />
+        <NavbarNewJokeModal />
+        <NavbarNotLoggedIn v-if="!isAuthenticated" />
+        <NavbarLoggedIn v-if="isAuthenticated" />
     </b-container>
     
   </div>
@@ -23,16 +23,8 @@
 </style>
 <script>
 import { mapGetters } from "vuex";
-import NotLoggedIn from "@/components/Navbar/NotLoggedIn"
-import LoggedIn from "@/components/Navbar/LoggedIn"
-import NewJokeModal from '@/components/Navbar/NewJokeModal';
 
 export default {
-    components: {
-    NewJokeModal,
-    NotLoggedIn,
-    LoggedIn
-  },
   computed: {
       ...mapGetters(["isAuthenticated", "loggedInUser"]),
     tags () {

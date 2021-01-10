@@ -18,32 +18,20 @@
             <b-tab title="معلومات عامة" active>
 
               <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="mb-0">الإسم</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    {{ user_info.firstname }} {{ user_info.lastname }}
-                </div>
+                <div class="col-sm-3"><h6 class="mb-0">الإسم</h6></div>
+                <div class="col-sm-9 text-secondary">{{ user_info.firstname }} {{ user_info.lastname }}</div>
             </div>
             <hr>
 
             <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="mb-0">البريد الإلكتروني</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    {{ user_info.email }}
-                </div>
+                <div class="col-sm-3"><h6 class="mb-0">البريد الإلكتروني</h6></div>
+                <div class="col-sm-9 text-secondary">{{ user_info.email }}</div>
             </div>
             <hr>
 
             <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="mb-0">مسجل منذ</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    <time :title="user_info.created_at" :datetime="user_info.created_at">{{ $moment(user_info.created_at).fromNow() }}</time>
-                </div>
+                <div class="col-sm-3"><h6 class="mb-0">مسجل منذ</h6></div>
+                <div class="col-sm-9 text-secondary"><time :title="user_info.created_at" :datetime="user_info.created_at">{{ $moment(user_info.created_at).fromNow() }}</time></div>
             </div>
             <hr>
 
@@ -57,8 +45,16 @@
             </div>
 
             </b-tab>
-            <b-tab title="النكت"><p>I'm the second tab</p></b-tab>
-            <b-tab title="التعليقات"><p>I'm a disabled tab!</p></b-tab>
+            <b-tab title="النكت">
+                <section class="jokes tags" v-if="jokes.length">
+                    <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
+                </section>
+                <section v-else>
+                    <b-alert variant="danger" show>
+                        لايوجد أي نكت بإسم هذا العضو
+                    </b-alert>
+                </section>
+            </b-tab>
           </b-tabs>
         </section>
         <section v-else><h5>جاري سحب اليوزر..</h5></section>
@@ -75,6 +71,8 @@ export default {
         username: this.$route.params.username,
         user_info: {},
         jokes: [],
+        current_page: 1,
+        jokes_retreived: 0,
     };
   },
   head() {
@@ -89,15 +87,20 @@ export default {
     mounted(){
     },
   async fetch() {
-        const user_data = await this.$f6snyApi.getUserByUsername(this.$route.params.username)
-        user_data.gender = user_data.gender ? "ذكر" : "أنثى";
-        this.user_info = user_data;
-        console.log(user_data)
-        //this.jokes_retreived += joke_data.length;
-        //this.tag_info = tag_data;
+        await this.getUser();
+        await this.getJokes();
   },
-
   methods: {
+      async getUser(){
+        const user_data = await this.$f6snyApi.getUserByUsername(this.$route.params.username)
+        this.user_info = user_data[0];
+        console.log(user_data)
+      },
+      async getJokes(){
+          const joke_data = await this.$f6snyApi.getUserJokesByID(this.user_info.id, this.jokes_retreived) 
+            this.jokes = this.jokes.concat(joke_data);
+            this.jokes_retreived += joke_data.length;
+      },
     lazyLoadJokes(isVisible) {
       console.log('lazy load fired')
       if (isVisible) {

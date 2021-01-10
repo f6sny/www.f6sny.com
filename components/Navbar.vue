@@ -12,8 +12,8 @@
             <b-navbar-nav class="mr-auto mt-2 mt-lg-0">
                 <b-nav-item href="#" title="عندك نكتة؟" v-b-modal.jokeModal><i class="fas fa-plus"></i></b-nav-item>
                 <b-nav-item to="/moderate"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters.pending_jokes" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-nav-item>
-                <Tags />
-                <Login />
+                <NavbarTags />
+                <NavbarLogin />
             </b-navbar-nav>
         </div>
       </div>
@@ -22,16 +22,13 @@
 </template>
 
 <script>
-import  Tags  from "@/components/Navbar/Tags";
 import { mapState } from 'vuex';
 
 export default {
-  components:{
-    Tags,
-  },
   computed: mapState(['counters','tags']),
   mounted(){
         console.log('mounted navbar')
+        this.$store.dispatch('nuxtServerInit');
         this.$store.dispatch('updateCounters');
   }
 

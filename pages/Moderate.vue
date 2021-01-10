@@ -75,9 +75,15 @@ export default {
   },
   methods: {
     async fetchPending() {
-      this.pending = await this.$f6snyApi.getPendingJokes();
-      console.log('now should be fetching pending')
-      console.log(this.pending);
+        try{
+            this.pending = await this.$f6snyApi.getPendingJokes();
+            console.log('now should be fetching pending')
+            console.log(this.pending);
+        }catch(err){
+            this.pending =  {};
+        }
+      
+      
     },
     async like(){
         console.log('like triggered')
