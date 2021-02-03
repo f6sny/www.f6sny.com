@@ -26,10 +26,12 @@
               <ul class="list-inline p-0 m-0 col-12 text-muted small text-left">
                 <li title="صفحة النكتة" class="list-inline-item"><b-link class="text-muted" :to="`/j/${joke.slug}`"><i class="fas fa-link"></i></b-link></li>
                 <li title="خمس تعليقات" class="list-inline-item"><i class="fas fa-comment"></i></li>
-                <li :title="votes_up + ' تصويتات للأعلى'" class="list-inline-item"><i class="fas fa-thumbs-up"></i></li>
-                <li :title="votes_down + ' تصويتات للأسفل'" class="list-inline-item"><i class="fas fa-thumbs-down"></i></li>
+                <li :title="votes_up + ' تصويتات للأعلى'" class="list-inline-item" @click.stop.prevent="like"><i class="fas fa-thumbs-up"></i></li>
+                <li :title="votes_down + ' تصويتات للأسفل'" class="list-inline-item" @click.stop.prevent="dislike"><i class="fas fa-thumbs-down"></i></li>
                 <li title="تبليغ" class="list-inline-item"><i class="fas fa-flag-alt"></i></li>
               </ul>
+                <Notification v-if="success" type="success" :message="success" />
+                <Notification v-if="error" type="danger" :message="error" />
             </footer>
           </b-col>
         </b-row>
@@ -48,6 +50,8 @@ export default {
         return {
             votes_up: 0,
             votes_down: 0,
+            success: null,
+            error: null,
         };
     },
     mounted() {
@@ -59,6 +63,42 @@ export default {
         }
         
     },
+    methods:{
+        async like(){
+            // record to cookie or session, id of the joke liked
+            try{
+                const data = await this.$f6snyApi.vote(this.joke.id,"up")
+                this.success = "صوتك وصل يالحب";
+                this.$store.dispatch('updateCounters');
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                this.success = null;
+                this.$nuxt.refresh()
+
+            }
+            catch(err){
+                this.error = err.response.data.message;
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                this.error = null;
+            }
+        },
+        async dislike(){
+            console.log('dislike triggered')
+            // record to cookie or session, id of the joke liked
+            try{
+                const data = await this.$f6snyApi.vote(this.joke.id,"down")
+                this.success = "صوتك وصل يالحب";
+                this.$store.dispatch('updateCounters');
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                this.success = null;
+                this.$nuxt.refresh()
+            }
+            catch(err){
+                this.error = err.response.data.message;
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                this.error = null;
+            }
+        },
+    }
 }
 </script>
 

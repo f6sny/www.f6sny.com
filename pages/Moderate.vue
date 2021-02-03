@@ -5,8 +5,8 @@
     </h2>
     <hr />
     <section class="moderate" v-if="Object.entries(pending).length !== 0">
-            <Notification v-if="success" type="success" :message="success" />
-            <Notification v-if="error" type="danger" :message="error" />
+        <Notification v-if="success" type="success" :message="success" />
+        <Notification v-if="error" type="danger" :message="error" />
         
         <b-alert show variant="warning"><strong>ساعدنا!</strong> قم بتقييم هذه النكتة إذا كانت تستحق الظهور أو لا.</b-alert>
 

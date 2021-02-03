@@ -20,7 +20,6 @@ export default $axios => () => ({
         return $axios.$get(`/jokes/${id}`)
     },
     
-
     searchJokesByKeywords(keywords, start){
         return $axios.$get(encodeURI(`/jokes?_q=${keywords}&_start=${start}`))
     },
@@ -32,6 +31,7 @@ export default $axios => () => ({
     postJoke(joke){
         return $axios.$post(`/jokes`,joke);
     },
+
 
     // ! Pages Calls #
     // ! #############
@@ -86,6 +86,7 @@ export default $axios => () => ({
         return $axios.$post(`/jokes/${id}/vote`,{"data": {"value": `${value}`}})
     },
     
+
     // ! Users Calls #
     // ! #############
     getCurrentUser(){
@@ -106,6 +107,14 @@ export default $axios => () => ({
 
     updateUserData(user_id, user_data){
         return $axios.$put(`/users/${user_id}`, user_data)
+    },
+
+    forgotPassword(email){
+        return $axios.$post(`/auth/forgot-password`, { email : email, } )
+    },
+
+    resetPassword(data){
+        return $axios.$post(`/auth/reset-password`, data )
     },
 
 

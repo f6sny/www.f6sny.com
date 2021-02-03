@@ -12,55 +12,21 @@
       <form v-if="!success" ref="form" method="post">
         <div class="modal-body">
           <b-form-group v-if="registeration_mode" label="اسم المستخدم" label-for="username-input">
-            <b-form-input
-              v-model="username"
-              type="text"
-              class="form-control"
-              name="username"
-              id="username-input"
-              aria-describedby="usernameHelp"
-              required
-            />
+            <b-form-input v-model="username" type="text" class="form-control" name="username" id="username-input" aria-describedby="usernameHelp" required />
           </b-form-group>
           <b-form-group v-if="registeration_mode" label="البريد الإلكتروني" label-for="email-input">
-            <b-form-input
-              v-model="email"
-              type="email"
-              class="form-control"
-              name="email"
-              id="email-input"
-              aria-describedby="emailHelp"
-              required
-            />
-            <small id="emailHelp" class="form-text text-muted"
-              >ماراح نعرض إيميلك لاحد أو نعطيه أحد.</small
-            >
+            <b-form-input v-model="email" type="email" class="form-control" name="email" id="email-input" aria-describedby="emailHelp" required />
+            <small id="emailHelp" class="form-text text-muted">ماراح نعرض إيميلك لاحد أو نعطيه أحد.</small>
           </b-form-group>
 
           <b-form-group v-if="!registeration_mode" label="اسم المستخدم أو الإيميل" label-for="identifier-input">
-            <b-form-input
-              v-model="identifier"
-              type="text"
-              class="form-control"
-              name="identifier"
-              id="identifier-input"
-              aria-describedby="identifierHelp"
-              required
-            />
+            <b-form-input v-model="identifier" type="text" class="form-control" name="identifier" id="identifier-input" aria-describedby="identifierHelp" required />
           </b-form-group>
 
           <b-form-group label="كلمة السر" label-for="password-input">
-            <b-form-input
-              v-model="password"
-              type="password"
-              class="form-control"
-              id="password-input"
-              name="password"
-              required
-            />
-            <small id="passwordHelp" class="form-text"
-              ><b-link class="text-muted" href="#">نسيت كلمة المرور؟</b-link></small
-            >
+            <b-form-input v-model="password" type="password" class="form-control" id="password-input" name="password" required />
+            <small id="passwordHelp" class="form-text">
+                <b-link class="text-muted" href="#">نسيت كلمة المرور؟</b-link></small>
           </b-form-group>
         </div>
       </form>
