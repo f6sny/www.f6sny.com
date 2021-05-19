@@ -15,6 +15,7 @@ RUN npm run build
 # expose 5000 on container
 EXPOSE 5050
 
+ENV API_AUTH_URL=https://api.f6sny.com/
 # set app serving to permissive / assigned
 ENV NUXT_HOST=0.0.0.0
 # set app port
