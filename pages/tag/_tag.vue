@@ -43,6 +43,9 @@ export default {
           hid: "description",name: "description",content: this.tag_info.description,
         },
         {
+          name: "robots",content: 'noindex',
+        },
+        {
           name: "keywords",content: this.tag_info.description.split(" ").join(", ").concat(", " + this.tag),
         },
       ],

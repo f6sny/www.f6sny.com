@@ -29,7 +29,7 @@
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="pending.tags">
                   <li v-bind:key="tag.id" v-for="tag in pending.tags" class="list-inline-item">
-                      <NuxtLink :to="`/t/${tag.slug}`">{{ `#${tag.title}` }}</NuxtLink>  
+                      <NuxtLink :to="`/tag/${tag.slug}`">{{ `#${tag.title}` }}</NuxtLink>  
                   </li>
                 </ul>
               </footer>

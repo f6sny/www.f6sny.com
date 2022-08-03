@@ -11,7 +11,7 @@
       <hr class="my-1" />
       <ul v-if="tags" style="" class="list-inline p-0 m-0 text-center">
         <li v-bind:key="tag.id" v-for="tag in tags" :style="`font-size: ${ randomSize(tag.jokes,tag.jokes_max) }em;`" class="list-inline-item">
-          <NuxtLink :to="`/t/${tag.slug}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
+          <NuxtLink :to="`/tag/${tag.slug}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
           
           </li>
       </ul>
@@ -36,7 +36,7 @@
       <hr class="my-1" />
       <ul class="list-unstyled">
         <li v-bind:key="comment.id" v-for="comment in comments" >
-          <b-link :to="`/j/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
+          <b-link :to="`/joke/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
         </li>
       </ul>
     </section>
@@ -45,7 +45,7 @@
       <h4>روابط مهمة</h4>
       <hr class="my-1" />
       <ul class="list-unstyled text-small">
-        <li v-bind:key="page.id" v-for="page in pages"><b-link :to="`/p/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</b-link></li>  
+        <li v-bind:key="page.id" v-for="page in pages"><b-link :to="`/page/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</b-link></li>  
         <li><b-link href="#"><i class="fas fa-exclamation-triangle"></i> القوانين والأحكام</b-link></li>
         <li><b-link href="https://github.com/Mo9a7i"><i class="fab fa-github"></i> المشروع في GitHub</b-link></li>
         <li><b-link href="#"><i class="fas fa-envelope"></i> إتصل بنا</b-link></li>
@@ -82,7 +82,7 @@ export default {
   methods:{
     search() {
         this.$store.commit('setSearchKeyword', this.search_word)
-        this.$router.push(`/s/${this.search_word}`);
+        this.$router.push(`/search/${this.search_word}`);
     },
     async fetchPages() {
         const page_data = await this.$f6snyApi.getPages();

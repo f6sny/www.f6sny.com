@@ -7,8 +7,8 @@
 
         <div class="modal-body">
           <ul>
-              <li><b-link :to="`/u/profile`" @click="toggleModal">الملف الشخصي</b-link></li>
-              <li><b-link :to="`/u/change-password`" @click="toggleModal">تغيير كلمة المرور</b-link></li>
+              <li><b-link :to="`/user/profile`" @click="toggleModal">الملف الشخصي</b-link></li>
+              <li><b-link :to="`/user/change-password`" @click="toggleModal">تغيير كلمة المرور</b-link></li>
           </ul>
         </div>
     </b-modal>

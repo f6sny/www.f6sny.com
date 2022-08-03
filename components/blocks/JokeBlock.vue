@@ -9,7 +9,7 @@
             <header class="mb-2">
               <p class="p-0 m-0 small text-muted">
                 <time class=" pl-2" :datetime="joke.updated_at" :title="joke.updated_at">{{ $moment(joke.updated_at).fromNow() }}</time>
-                <strong>بواسطة <a v-if="joke.author" :href="`/u/${joke.author.username}`">{{ joke.author.username }} </a> <a href="#" v-else>مجهول</a></strong>
+                <strong>بواسطة <a v-if="joke.author" :href="`/user/${joke.author.username}`">{{ joke.author.username }} </a> <a href="#" v-else>مجهول</a></strong>
               </p>
             </header>
             <section class="">
@@ -17,14 +17,14 @@
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
                   <li v-bind:key="tag.id" v-for="tag in joke.tags" class="list-inline-item" >
-                    <NuxtLink :to="`/t/${tag.slug}`">{{ `#${tag.title}` }}</NuxtLink>  
+                    <NuxtLink :to="`/tag/${tag.slug}`">{{ `#${tag.title}` }}</NuxtLink>  
                   </li>
                 </ul>
               </footer>
             </section>
             <footer class="">
               <ul class="list-inline p-0 m-0 col-12 text-muted small text-left">
-                <li title="صفحة النكتة" class="list-inline-item"><b-link class="text-muted" :to="`/j/${joke.slug}`"><i class="fas fa-link"></i></b-link></li>
+                <li title="صفحة النكتة" class="list-inline-item"><b-link class="text-muted" :to="`/joke/${joke.slug}`"><i class="fas fa-link"></i></b-link></li>
                 <li title="خمس تعليقات" class="list-inline-item"><i class="fas fa-comment"></i></li>
                 <li :title="votes_up + ' تصويتات للأعلى'" class="list-inline-item" @click.stop.prevent="like"><i class="fas fa-thumbs-up"></i></li>
                 <li :title="votes_down + ' تصويتات للأسفل'" class="list-inline-item" @click.stop.prevent="dislike"><i class="fas fa-thumbs-down"></i></li>

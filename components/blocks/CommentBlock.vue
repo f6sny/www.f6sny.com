@@ -7,7 +7,7 @@
                 <header class="mb-3">
                     <time class=" pl-2" :datetime="comment.updated_at" :title="comment.updated_at">{{ $moment(comment.updated_at).fromNow() }}</time>
                     <strong>بواسطة 
-                        <b-link :to="`/u/${comment.authorUser.username}`" v-if="comment.authorUser">{{ comment.authorUser.username }}</b-link>
+                        <b-link :to="`/user/${comment.authorUser.username}`" v-if="comment.authorUser">{{ comment.authorUser.username }}</b-link>
                         <b-link :title="`${comment.authorEmail}`" v-else>{{ comment.authorName }}</b-link>
                     </strong>    
                 </header>
