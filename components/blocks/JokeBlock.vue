@@ -13,7 +13,8 @@
               </p>
             </header>
             <section class="">
-              <h1 class="h5 p-0 m-0" v-html="joke.content"></h1>
+              <h1 v-if="!homepage" class="h5 p-0 m-0" v-html="joke.content"></h1>
+              <p v-else class="h5 p-0 m-0" v-html="joke.content"></p>
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
                   <li v-bind:key="tag.id" v-for="tag in joke.tags" class="list-inline-item" >
@@ -44,6 +45,10 @@ export default {
         joke: {
             type: Object,
             default: null,
+        },
+        homepage: {
+            type: Number,
+            default: 0,
         }
     },
     data() {

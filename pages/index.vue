@@ -3,7 +3,7 @@
     <h2>كل النكت</h2>
     <hr />
     <section class="jokes" v-if="jokes.length">
-      <joke-block v-for="(joke, i) in jokes" :key="`joke-${joke.id}`" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke" />
+      <joke-block v-for="(joke, i) in jokes" :key="`joke-${joke.id}`" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke" homepage="1" />
     </section>
     <section v-else>
       <h5>جاري سحب النكت..</h5>
