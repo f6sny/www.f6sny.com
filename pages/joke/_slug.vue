@@ -52,7 +52,7 @@ export default {
   },
   head() {
     return {
-      title: this.shorten(this.$route.params.slug, 46, " "),
+      title: this.shorten(this.joke.content, 46, " "),
       meta: [{ hid: "description",name: "description",content: this.joke.content,},],
     };
   },
