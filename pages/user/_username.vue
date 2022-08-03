@@ -7,8 +7,10 @@
             <b-avatar v-else size="6rem"></b-avatar>
           </b-col>
           <b-col cols="9">
-            <h2>{{ username }}<br />
-            <small>{{ user_info.bio }}</small></h2>
+            <h1 class="h2">
+              {{ username }}<br />
+              <small>{{ user_info.bio }}</small>
+            </h1>
           </b-col>
         </b-row>
         
@@ -79,8 +81,7 @@ export default {
     return {
         title: this.username ,
         meta: [
-            { hid: 'description', name: 'description', content: this.user_info.bio },
-            { name: 'keywords', content: this.user_info.bio },
+            { hid: 'description', name: 'description', content: `${this.user} ${this.user_info.bio}` },
         ]
     }
   },

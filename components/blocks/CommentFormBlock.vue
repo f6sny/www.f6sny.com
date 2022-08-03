@@ -3,6 +3,10 @@
         <Notification v-if="success" type="success" :message="success" />
         <Notification v-if="error" type="danger" :message="error" />
 
+        
+        <b-form-group id="comment_field">
+            <b-form-textarea id="new_comment_box" v-model="new_comment" rows="2" placeholder="اكتب تعليقك" no-resize></b-form-textarea>
+        </b-form-group>
         <div class="user-info text-left mb-1">
             <div v-if="isAuthenticated">
                 <small>سيتم نشر التعليق بإسم: <mark v-if="isAuthenticated">{{ loggedInUser.username }}</mark></small>
@@ -14,9 +18,6 @@
             </div>
             
         </div>
-        <b-form-group id="comment_field">
-            <b-form-textarea id="new_comment_box" v-model="new_comment" rows="2" placeholder="اكتب تعليقك" no-resize></b-form-textarea>
-        </b-form-group>
             
         <b-form-group id="comment_button" v-if="comment_textarea_counter">
             <b-row>

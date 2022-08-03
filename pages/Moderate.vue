@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>مراقبة النكت<br>
+    <h1 class="h2">مراقبة النكت<br>
     <small class="text-muted">إذا النكتة عجبت ناس واجد بنعرضها, وإذا ماعجبت ناس واجد راح نمسحها قبل العرض</small>
-    </h2>
+    </h1>
     <hr />
     <section class="moderate" v-if="Object.entries(pending).length !== 0">
         <Notification v-if="success" type="success" :message="success" />
@@ -65,6 +65,12 @@ export default {
         success: null,
         error: null,
         
+    };
+  },
+  head() {
+    return {
+      title: "مراقبة النكت",
+      meta: [{ hid: "description",name: "description",content: "راقب النكت معنا، إذا النكتة عجبت ناس واجد بنعرضها, وإذا ماعجبت ناس واجد راح نمسحها قبل العرض",},],
     };
   },
   mounted() {

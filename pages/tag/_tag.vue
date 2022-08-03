@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="jokes">
-      <h2>
+      <h1 class="h2">
         #{{ tag }}<br />
         <small>{{ tag_info.description }}</small>
         <br />
         <small class="text-muted">عندنا {{ tag_info.jokes }} نكتة تحت تصنيف #{{ tag }}</small>
-      </h2>
+      </h1>
       <hr />
       <section class="jokes tags" v-if="jokes.length">
         <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
