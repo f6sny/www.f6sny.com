@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@meilisearch/instant-meilisearch": "^0.8.2",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.1",
@@ -18,7 +19,9 @@
     "cookieparser": "^0.1.0",
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
+    "meilisearch": "^0.27.0",
     "nuxt": "^2.14.6",
+    "vue-instantsearch": "^4.5.0",
     "vue-multiselect": "^2.1.6",
     "vue-observe-visibility": "^0.4.6"
   },
