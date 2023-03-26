@@ -9,26 +9,26 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@meilisearch/instant-meilisearch": "^0.8.2",
+    "@meilisearch/instant-meilisearch": "^0.11.1",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/markdownit": "^1.2.10",
-    "bootstrap": "^4.5.2",
+    "bootstrap": "^5.3.0-alpha2",
+    "bootstrap-icons": "^1.10.3",
     "bootstrap-vue": "^2.17.3",
     "cookieparser": "^0.1.0",
     "core-js": "^3.6.5",
-    "js-cookie": "^2.2.1",
-    "meilisearch": "^0.27.0",
+    "js-cookie": "^3.0.1",
+    "meilisearch": "^0.31.1",
     "nuxt": "^2.14.6",
-    "vue-instantsearch": "^4.5.0",
-    "vue-multiselect": "^2.1.6",
-    "vue-observe-visibility": "^0.4.6"
+    "vue-instantsearch": "^4.8.8",
+    "vue-multiselect": "^2.1.7",
+    "vue-observe-visibility": "^1.0.0"
   },
   "devDependencies": {
     "@nuxtjs/moment": "^1.6.1",
     "moment-transform": "^1.0.1",
-    "node-sass": "^5.0.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0"
   }

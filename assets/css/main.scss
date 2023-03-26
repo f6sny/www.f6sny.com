@@ -1,2 +1,15 @@
+/* to include fonts
+@import '_fonts.scss';
+*/
+
+@import '~bootstrap/scss/bootstrap'; /* these are the important lines for this task */
+@import "bootstrap-icons/font/bootstrap-icons.css"; /* these are the important lines for this task */
+
+/* if you want to override
+@import '_mixins.scss';
+@import '_variables.scss';
+*/
+
+
 @import url('./_overrides.scss');
 @import url('./_styles.scss') 

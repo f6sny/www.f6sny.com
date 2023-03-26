@@ -1,4 +1,4 @@
-const MeiliSearch = require("meilisearch");
+const { MeiliSearch } = require("meilisearch");
 
 const client = new MeiliSearch({
   host: "https://search.f6sny.com/",

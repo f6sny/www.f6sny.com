@@ -25,7 +25,7 @@
   
   <script>
   import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-  import meili from "~/plugins/meilisearch";
+  //import meili from "~/plugins/meilisearch";
   export default {
     data() {
       return {
