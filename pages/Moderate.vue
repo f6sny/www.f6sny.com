@@ -21,7 +21,7 @@
                 <i class="far fa-chevron-down"></i>
               </div>
               <p class="p-0 m-0 small text-muted">
-                <time class=" pl-2" :datetime="pending.updated_at">منذ خمس دقائق</time>
+                <time class=" ps-2" :datetime="pending.updated_at">منذ خمس دقائق</time>
               </p>
             </header>
             <section class="">

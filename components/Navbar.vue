@@ -9,7 +9,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <b-navbar-nav class="mr-auto mt-2 mt-lg-0">
+            <b-navbar-nav class="ms-auto mt-2 mt-lg-0">
                 <b-nav-item href="#" title="عندك نكتة؟" v-b-modal.jokeModal><i class="fas fa-plus"></i></b-nav-item>
                 <b-nav-item to="/moderate"><i class="fa fa-eye fa-lg"></i> <b-badge v-if="counters.pending_jokes" pill variant="danger">{{ counters.pending_jokes }}</b-badge></b-nav-item>
                 <NavbarTags />

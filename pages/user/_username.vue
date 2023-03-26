@@ -49,7 +49,7 @@
             </b-tab>
             <b-tab title="النكت">
                 <section class="jokes tags" v-if="jokes.length">
-                    <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
+                    <blocks-joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
                 </section>
                 <section v-else>
                     <b-alert variant="danger" show>

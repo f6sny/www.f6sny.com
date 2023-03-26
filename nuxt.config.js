@@ -36,14 +36,6 @@ export default {
 	],
 
     components: true,
-    components: {
-        dirs:[
-            '~/components', {
-                path: '~/components/navbar',
-                prefix: 'Navbar'
-            }
-        ]
-    },
 
 	buildModules: [
 		[
@@ -55,7 +47,8 @@ export default {
 					'moment-transform',
 				]
 			}
-		]
+		],
+		'@nuxt/components'
 	],
 
 	modules: [

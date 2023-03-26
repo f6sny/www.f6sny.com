@@ -2,7 +2,7 @@
     <b-modal ref="userModal" id="userModal">
       <template #modal-title>إقلط</template>
       <template #modal-footer>
-        <b-link class="ml-auto" @click="alternate_mode" href="#"><span v-if="registeration_mode">عندك عضوية؟ طق هنا</span><span v-else>تبي تسجل معنا؟ طق هنا</span></b-link>
+        <b-link class="ms-auto" @click="alternate_mode" href="#"><span v-if="registeration_mode">عندك عضوية؟ طق هنا</span><span v-else>تبي تسجل معنا؟ طق هنا</span></b-link>
         <b-button v-if="registeration_mode" type="submit" id="register_button" variant="success"  @click.stop.prevent="register">تسجيل جديد</b-button>
         <b-button v-if="!registeration_mode" type="submit" id="login_button" variant="primary"  @click.stop.prevent="login">تسجيل دخول</b-button>
       </template>

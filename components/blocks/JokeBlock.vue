@@ -1,19 +1,19 @@
 <template>
   <article class="p-md-3 p-1 mb-2" :id="joke.id">
         <b-row>
-          <b-col cols="1" class="pl-0">
+          <b-col cols="1" class="ps-0">
             <b-avatar v-if="joke.author.display_picture" :src="(joke.author.display_picture)?joke.author.display_picture : ``" size=""></b-avatar>
             <b-avatar v-else size=""></b-avatar>
           </b-col>
           <b-col cols="11">
             <header class="mb-2">
               <p class="p-0 m-0 small text-muted">
-                <time class=" pl-2" :datetime="joke.updated_at" :title="joke.updated_at">{{ $moment(joke.updated_at).fromNow() }}</time>
+                <time class=" ps-2" :datetime="joke.updated_at" :title="joke.updated_at">{{ $moment(joke.updated_at).fromNow() }}</time>
                 <strong>بواسطة <a v-if="joke.author" :href="`/user/${joke.author.username}`">{{ joke.author.username }} </a> <a href="#" v-else>مجهول</a></strong>
               </p>
             </header>
             <section class="">
-              <h1 v-if="!homepage" class="h5 p-0 m-0" v-html="joke.content"></h1>
+              <h1 v-if="!is_homepage" class="h5 p-0 m-0" v-html="joke.content"></h1>
               <p v-else class="h5 p-0 m-0" v-html="joke.content"></p>
               <footer class="mb-3">
                 <ul class="list-inline p-0 m-0 small" v-if="joke.tags.length">
@@ -46,9 +46,9 @@ export default {
             type: Object,
             default: null,
         },
-        homepage: {
-            type: Number,
-            default: 0,
+        is_homepage: {
+            type: Boolean,
+            default: false,
         }
     },
     data() {

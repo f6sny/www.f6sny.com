@@ -2,16 +2,7 @@
     <div>
         <h1>Hello</h1>
         <div class="search_box">
-
-            <input
-        class="page-explore__input text-medium"
-        type="text"
-        :value="activeQuery"
-        placeholder="Search anything"
-        @input="inputHandler"
-      />
-
-
+          <input class="page-explore__input text-medium" type="text" :value="activeQuery" placeholder="Search anything" @input="inputHandler" />
         </div>
 
         <div class="results">

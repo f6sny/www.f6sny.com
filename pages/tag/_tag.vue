@@ -9,7 +9,7 @@
       </h1>
       <hr />
       <section class="jokes tags" v-if="jokes.length">
-        <joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
+        <blocks-joke-block v-for="(joke, i) in jokes" :key="joke.id" v-observe-visibility="i === jokes.length - 1 ? lazyLoadJokes : false" :joke="joke"/>
       </section>
       <section v-else>
         <b-alert variant="warning" show><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> جاري سحب النكت..</b-alert>

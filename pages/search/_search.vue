@@ -4,7 +4,7 @@
       <h2>بحث عن "{{ this.search_word }}"</h2>
       <hr />
       <section class="jokes search_results" v-if="results.length">
-        <joke-block
+        <blocks-joke-block
           v-for="(joke, i) in results"
           :key="joke.id"
           v-observe-visibility="
