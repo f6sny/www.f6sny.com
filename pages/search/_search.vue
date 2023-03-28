@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-if="results">
-      <h2>بحث عن "{{ this.search_word }}"</h2>
-      <hr />
+      <blocks-page-title-block :title="`بحث عن (${ this.search_word })`"  :small="`حصلنا ${ results.length } تطابق النتيجة`" class="" />
       <section class="jokes search_results" v-if="results.length">
         <blocks-joke-block
           v-for="(joke, i) in results"

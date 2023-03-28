@@ -1,10 +1,9 @@
 <template>
   <div>
-      <h1>{{ this.page.title }}</h1>
-      <hr />
-      <div class="content" v-html="$md.render(this.page.content)">
+    <blocks-page-title-block :title="page.title" />
+      <div class="content" v-html="$md.render(page.content)">
       </div>
-      </div>
+    </div>
 </template>
 
 <script>
@@ -35,7 +34,6 @@ export default {
     methods: {
         async getPage(){
             const page_data = await this.$f6snyApi.getPageBySlug(this.$route.params.slug)
-            console.log(page_data)
             this.page = page_data[0];
         },
     }

@@ -1,11 +1,8 @@
 <template>
     <div :id="`comment-${comment.id}`" class="comment comment-id-5 p-3 rounded">
-
         <div class="row">
             <div class="col col-auto text-center">
-                <div class="text-center avatar">
-                    <img src="https://placeholder.pics/svg/35" height="35px" class="rounded-2" alt="...">
-                </div>
+                <avatar :picture="(comment?.authorUser?.display_picture) ? comment?.authorUser?.display_picture : ``"></avatar>
             </div>   
             <div class="col">
                 <header class="mb-3">

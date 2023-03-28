@@ -7,6 +7,7 @@
         <b-form-group id="comment_field">
             <b-form-textarea id="new_comment_box" v-model="new_comment" rows="2" placeholder="اكتب تعليقك" no-resize></b-form-textarea>
         </b-form-group>
+        
         <div class="user-info text-left mb-1">
             <div v-if="isAuthenticated">
                 <small>سيتم نشر التعليق بإسم: <mark v-if="isAuthenticated">{{ loggedInUser.username }}</mark></small>

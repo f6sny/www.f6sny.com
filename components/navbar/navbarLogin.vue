@@ -1,7 +1,10 @@
 <template>
-    <b-nav-item href="#" class="text-white" v-b-modal.userModal>
-        <span v-if="isAuthenticated" > هلا {{ loggedInUser.username }}</span> <i class="fa fa-user fa-lg"></i>
-    </b-nav-item>
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="#userModal" data-bs-toggle="modal">
+        <span v-if="isAuthenticated" >هلا {{ loggedInUser.username }}</span>
+        <span v-else >تسجيل دخول</span>
+      </a>
+    </li>     
 </template>
 <script>
 import { mapGetters } from "vuex";

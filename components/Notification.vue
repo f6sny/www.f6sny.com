@@ -1,8 +1,9 @@
 <template>
-  <b-alert fade :variant="`${type}`" show>
+  <div :class="`alert alert-${type}`">
     <strong v-if="type == `danger`">خطأ: </strong>
     {{ message }}
-  </b-alert>
+  </div>
+
 </template>
 
 <script>

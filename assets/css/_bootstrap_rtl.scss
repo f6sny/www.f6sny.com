@@ -1,0 +1,40 @@
+.dropdown-menu[data-bs-popper] {
+    top: 100%;
+    left:unset;
+    right:0;
+    margin-top: var(--bs-dropdown-spacer);
+}
+
+
+.form-check {
+    font-size: .875rem;
+    padding-left: 0;
+    padding-right: 1.5em;
+    .form-check-input {
+        float: right;
+        margin-left: 0;
+        margin-right: -1.5em;
+    }    
+}
+
+.form-check-inline {
+    margin-right: 0;
+    margin-left: 1rem;
+}
+
+.modal-header {
+    .btn-close {
+        margin: calc(-0.5 * var(--bs-modal-header-padding-y)) auto calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x));
+    }
+}
+
+.navbar-nav {
+    --bs-nav-link-padding-x: 0;
+    --bs-nav-link-padding-y: 0.5rem;
+    padding-right: 0;
+}
+
+.list-inline-item:not(:last-child) {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}

@@ -1,107 +1,45 @@
 @import url('./_aside.scss');
 
-.why {
-	background-color: red;
-}
-
 body {
 	text-align: right;
 	font-family: 'Noto Naskh Arabic', Arial, Helvetica, sans-serif;
 	font-size: 18px;
 }
 
-.modal-header .close {
-	margin: -1rem auto -1rem -1rem;
-}
-
-
-.specialAlert:empty {
-	display: none;
-}
-
 .rainbow {
 	display: block;
-	height: 5px;
-	background: url('../img/rainbow.png') repeat-x scroll -500% 0px #FFF;
+	height: 7px;
+	background: url('../img/rainbow.png') repeat scroll -500% 0px #FFF;
 }
 
-nav .container-xl {
-	padding-right: 0;
-	padding-left: 0;
-}
 
-nav.navbar.bg-dark {
+nav {
 	background-color: #ff7444 !important;
 	border-color: transparent;
-}
 
-nav .navbar-brand {
-	width: 117px;
-	background: url('../img/Logo.png')no-repeat;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	height: 50px;
-	margin-right: 0;
-	margin-left: 1rem;
-}
-
-
-.dropdown-toggle::after {
-	margin-right: .255em;
-	margin-left: 0;
-}
-
-.dropdown-menu {
-	top: 100%;
-	left: auto;
-	right: 0;
-	float: right;
-	text-align: right;
-
-	
-}
-
-.dropdown-item {
-    color: inherit;
-}
-
-.nav-link {
-	padding-right: 2rem;
-	padding-left: 2rem;
-}
-
-@media (min-width: 992px) {
-	.navbar-expand-lg .navbar-nav .nav-link {
-		padding-right: 1rem;
-		padding-left: 1rem;
+	.offcanvas{
+		background-color: #ac4a29 !important;
 	}
 }
 
-
 .jokes article {
 	border-right: 4px solid #bfbfbf;
+
+	&:nth-child(even) {
+		background-color: rgba(0, 0, 0, 0.05);
+		border-right-color: #ffe691;
+	}
 }
 
-section.jokes article:nth-child(even) {
-	background-color: rgba(0, 0, 0, 0.05);
-	border-right-color: #ffe691;
-}
+#comments {
+	.comments-loop {
+		.comment{
+			font-size:0.95rem;
+			border-bottom: 1px dashed #aaa;
 
-.list-inline-item:not(:last-child) {
-	margin-left: .5rem;
-	margin-right: 0;
+			&:hover{
+				background-color: #efefef;
+			}
+		}
+	}
 }
-
-
-#comments .comments-loop .comment{
-	font-size:0.95rem;
-	border-bottom: 1px dashed #aaa;
-}
-#comments .comments-loop .comment:nth-child(even){
-}
-
-#comments .comments-loop .comment:hover{
-	background-color: #efefef;
-}
-

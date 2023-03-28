@@ -1,12 +1,7 @@
 <template>
   <aside id="sidebar">
-    <section class="widget search py-3 mb-4">
-        <div class="form-group">
-          <input class="form-control" v-model="search_word" v-on:keyup.enter="search" type="text" id="search" name="search" placeholder="ابحث بالموقع" />
-        </div>
-    </section>
-
-    <section class="widget tags p-3 mb-4">
+    
+    <section class="widget tags mt-2 p-3 mb-4">
       <h4>سحابة التصنيفات</h4>
       <hr class="my-1" />
       <ul v-if="tags" style="" class="list-inline p-0 m-0 text-center">
@@ -36,7 +31,7 @@
       <hr class="my-1" />
       <ul class="list-unstyled">
         <li v-bind:key="comment.id" v-for="comment in comments" >
-          <b-link :to="`/joke/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</b-link>
+          <nuxt-link :to="`/joke/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</nuxt-link>
         </li>
       </ul>
     </section>
@@ -45,10 +40,10 @@
       <h4>روابط مهمة</h4>
       <hr class="my-1" />
       <ul class="list-unstyled text-small">
-        <li v-bind:key="page.id" v-for="page in pages"><b-link :to="`/page/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</b-link></li>  
-        <li><b-link href="#"><i class="fas fa-exclamation-triangle"></i> القوانين والأحكام</b-link></li>
-        <li><b-link href="https://github.com/Mo9a7i"><i class="fab fa-github"></i> المشروع في GitHub</b-link></li>
-        <li><b-link href="#"><i class="fas fa-envelope"></i> إتصل بنا</b-link></li>
+        <li v-bind:key="page.id" v-for="page in pages"><nuxt-link :to="`/page/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</nuxt-link></li>  
+        <li><nuxt-link to="#"><i class="fas fa-exclamation-triangle"></i> القوانين والأحكام</nuxt-link></li>
+        <li><a href="https://github.com/f6sny"><i class="fab fa-github"></i> المشروع في GitHub</a></li>
+        <li><nuxt-link to="#"><i class="fas fa-envelope"></i> إتصل بنا</nuxt-link></li>
       </ul>
     </section>
   </aside>
@@ -57,9 +52,6 @@
 <script>
 export default {
   computed: {
-    search_keyword (){  
-      return this.$store.state.search_keywords;
-    },
     tags () {
       return this.$store.state.tags;
     },
@@ -70,7 +62,6 @@ export default {
   data(){
     return {
       comments: [],
-      search_word: "",
       pages: [],
     }
 
@@ -80,10 +71,6 @@ export default {
     this.fetchPages();
   },
   methods:{
-    search() {
-        this.$store.commit('setSearchKeyword', this.search_word)
-        this.$router.push(`/search/${this.search_word}`);
-    },
     async fetchPages() {
         const page_data = await this.$f6snyApi.getPages();
         console.log(page_data)

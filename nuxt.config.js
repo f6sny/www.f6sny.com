@@ -12,6 +12,11 @@ export default {
 	target: 'server',
 
 	head: {
+		htmlAttrs:  {
+			lang: "ar",
+			dir: "rtl"
+		},
+	  
 		title: 'إضحك لين تفطس',
 		titleTemplate: '%s | فطسني',
 		meta: [{charset: 'utf-8'}, { name: 'viewport', content: 'width=device-width, initial-scale=1'},{

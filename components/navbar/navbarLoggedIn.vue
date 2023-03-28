@@ -1,17 +1,25 @@
 <template>
-  <b-modal ref="userModal" id="userModal">
-      <template #modal-title>يا هلا</template>
-      <template #modal-footer>
-        <b-button type="submit" id="logout_button" variant="danger"  @click.stop.prevent="logout">تسجيل خروج</b-button>
-      </template>
 
+  <div ref="userModal" class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="userModalLabel">يا هلا</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
         <div class="modal-body">
           <ul>
-              <li><b-link :to="`/user/profile`" @click="toggleModal">الملف الشخصي</b-link></li>
-              <li><b-link :to="`/user/change-password`" @click="toggleModal">تغيير كلمة المرور</b-link></li>
+              <li><nuxt-link :to="`/user/profile`" @click="toggleModal">الملف الشخصي</nuxt-link></li>
+              <li><nuxt-link :to="`/user/change-password`" @click="toggleModal">تغيير كلمة المرور</nuxt-link></li>
           </ul>
         </div>
-    </b-modal>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" id="logout_button" @click.stop.prevent="logout">تسجيل خروج</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 <script>
 import { mapGetters } from "vuex";

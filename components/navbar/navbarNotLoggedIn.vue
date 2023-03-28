@@ -1,36 +1,54 @@
 <template>
-    <b-modal ref="userModal" id="userModal">
-      <template #modal-title>إقلط</template>
-      <template #modal-footer>
-        <b-link class="ms-auto" @click="alternate_mode" href="#"><span v-if="registeration_mode">عندك عضوية؟ طق هنا</span><span v-else>تبي تسجل معنا؟ طق هنا</span></b-link>
-        <b-button v-if="registeration_mode" type="submit" id="register_button" variant="success"  @click.stop.prevent="register">تسجيل جديد</b-button>
-        <b-button v-if="!registeration_mode" type="submit" id="login_button" variant="primary"  @click.stop.prevent="login">تسجيل دخول</b-button>
-      </template>
-      <Notification v-if="success" type="success" :message="success" />
-      <Notification v-if="error" type="danger" :message="error" />
+    <div ref="userModal" class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="userModalLabel">إقلط</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <Notification v-if="success" type="success" :message="success" />
+            <Notification v-if="error" type="danger" :message="error" />
 
-      <form v-if="!success" ref="form" method="post">
-        <div class="modal-body">
-          <b-form-group v-if="registeration_mode" label="اسم المستخدم" label-for="username-input">
-            <b-form-input v-model="username" type="text" class="form-control" name="username" id="username-input" aria-describedby="usernameHelp" required />
-          </b-form-group>
-          <b-form-group v-if="registeration_mode" label="البريد الإلكتروني" label-for="email-input">
-            <b-form-input v-model="email" type="email" class="form-control" name="email" id="email-input" aria-describedby="emailHelp" required />
-            <small id="emailHelp" class="form-text text-muted">ماراح نعرض إيميلك لاحد أو نعطيه أحد.</small>
-          </b-form-group>
+            <form v-if="!success" ref="form" method="post">
+              <div class="mb-3" v-if="registeration_mode">
+                <label for="username-input" class="form-label">اسم المستخدم</label>
+                <input v-model="username" type="text" class="form-control" name="username" id="username-input" aria-describedby="usernameHelp" required>
+              </div>
 
-          <b-form-group v-if="!registeration_mode" label="اسم المستخدم أو الإيميل" label-for="identifier-input">
-            <b-form-input v-model="identifier" type="text" class="form-control" name="identifier" id="identifier-input" aria-describedby="identifierHelp" required />
-          </b-form-group>
+              <div class="mb-3" v-if="registeration_mode">
+                <label for="email-input" class="form-label">البريد الإلكتروني</label>
+                <input v-model="email" type="email" class="form-control" name="email" id="email-input" aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">
+                  ماراح نعرض إيميلك لاحد أو نعطيه أحد
+                </div>
+              </div>
 
-          <b-form-group label="كلمة السر" label-for="password-input">
-            <b-form-input v-model="password" type="password" class="form-control" id="password-input" name="password" required />
-            <small id="passwordHelp" class="form-text">
-                <b-link class="text-muted" href="#">نسيت كلمة المرور؟</b-link></small>
-          </b-form-group>
+              <div class="mb-3" v-if="!registeration_mode">
+                <label for="identifier-input" class="form-label">اسم المستخدم أو الإيميل</label>
+                <input v-model="identifier" type="text" class="form-control" name="identifier" id="identifier-input" aria-describedby="identifierHelp" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="password-input" class="form-label">كلمة السر</label>
+                <input v-model="password" type="password" class="form-control" name="password" id="password-input" aria-describedby="identifierHelp" required>
+                <div id="emailHelp" class="form-text">
+                  <small><nuxt-link class="text-muted" to="#">نسيت كلمة المرور؟</nuxt-link></small>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="ms-auto" @click="alternate_mode" href="#">
+              <span v-if="registeration_mode">عندك عضوية؟ طق هنا</span>
+              <span v-else>تبي تسجل معنا؟ طق هنا</span>
+            </a>
+            <button v-if="registeration_mode" type="submit" class="btn btn-success" id="register_button" @click.stop.prevent="register">تسجيل جديد</button>
+            <button v-if="!registeration_mode" type="submit" class="btn btn-primary" id="login_button" @click.stop.prevent="login">تسجيل دخول</button>
+          </div>
         </div>
-      </form>
-    </b-modal>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -69,7 +87,8 @@ export default {
         const registerButton = document.getElementById("register_button");
         registerButton.disabled = true;
 
-      } catch (e) {
+      } 
+      catch (e) {
         this.error = e.response.data.error;
       }
     },
@@ -79,8 +98,8 @@ export default {
       try {
         let response = await this.$auth.loginWith("local", {
           data: {
-          identifier: this.identifier,
-          password: this.password,
+            identifier: this.identifier,
+            password: this.password,
           },
         });
         console.log(response)

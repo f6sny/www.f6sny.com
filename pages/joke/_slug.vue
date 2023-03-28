@@ -39,23 +39,28 @@ export default {
 	async fetch() {
 		await this.get_joke();
 		await this.get_comments();
+		this.$nuxt.$emit('joke-loaded', this.joke);
 	},
+	mounted() {
+  this.$nuxt.$on('joke-loaded', this.get_comments);
+},
 	head() {
+		if (!this.joke) return {};
 		return {
 			title: this.shorten(this.joke.content, 46, " "),
 			meta: [
-				{
-					hid: "description",
-					name: "description",
-					content: this.joke.content,
-				},
+			{
+				hid: "description",
+				name: "description",
+				content: this.joke.content,
+			},
 			],
 		};
 	},
 	methods: {
-		shorten(str, maxLen, separator = " ") {
-			if (str.length <= maxLen) return str;
-			return str.substr(0, str.lastIndexOf(separator, maxLen));
+		shorten(text, maxLen, separator = " ") {
+			if (text.length <= maxLen) return text;
+			return text.substr(0, text.lastIndexOf(separator, maxLen));
 		},
 
 		async get_joke() {
@@ -65,16 +70,33 @@ export default {
 		async get_comments() {
 			// we have to add get comments here.
 			const result = await this.$f6snyApi.getComments(this.joke.id);
-			this.comments = result.sort((a, b) => {
-				if (a.id > b.id) {
-					return -1;
-				}
-				if (b.id > a.id) {
-					return 1;
-				}
-				return 0;
-			});
+			this.comments = this.quickSort(result);
 		},
+		quickSort(array) {
+			if (array.length <= 1) {
+				return array;
+			}
+
+			const pivotIndex = Math.floor(array.length / 2);
+			const pivot = array[pivotIndex];
+			const left = [];
+			const right = [];
+
+			for (let i = 0; i < array.length; i++) {
+				if (i === pivotIndex) {
+				continue;
+				}
+
+				if (array[i].id > pivot.id) {
+				right.push(array[i]);
+				} else {
+				left.push(array[i]);
+				}
+			}
+
+			return this.quickSort(right).concat([pivot], this.quickSort(left));
+		},
+
 	},
 };
 </script>
