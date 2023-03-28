@@ -5,12 +5,12 @@
                 <avatar :picture="(comment?.authorUser?.display_picture) ? comment?.authorUser?.display_picture : ``"></avatar>
             </div>   
             <div class="col">
-                <header class="mb-3">
+                <header class="mb-1 small">
                     <time class="ps-2" :datetime="comment.updated_at" :title="comment.updated_at">{{ $moment(comment.updated_at).fromNow() }}</time>
-                    <strong>
+                    <span>بواسطة 
                         <NuxtLink :to="`/user/${comment.authorUser.username}`" v-if="comment.authorUser">{{ comment.authorUser.username }}</NuxtLink>
                         <a :title="`${comment.authorEmail}`" v-else>{{ comment.authorName }}</a>
-                    </strong> 
+                    </span> 
                 </header>
                 <div class="comment-text" v-html="comment.content"></div>
                 <footer class="text-left text-muted small"></footer>
