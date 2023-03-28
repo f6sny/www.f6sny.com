@@ -23,7 +23,7 @@ export default {
   },
  
   async fetch() {
-    const data = await this.$f6snyApi.getJokes(((this.jokes_retreived)? this.jokes_retreived + 1 : this.jokes_retreived));
+    const data = await this.$f6snypi.jokes().getJokes(((this.jokes_retreived)? this.jokes_retreived + 1 : this.jokes_retreived));
       this.jokes = this.jokes.concat(data);
       console.log(`Got ${data.length} jokes, adding to ${this.jokes_retreived} total should be ${data.length + this.jokes_retreived}`)
       this.jokes_retreived += data.length;

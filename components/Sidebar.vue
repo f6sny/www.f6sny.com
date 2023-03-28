@@ -72,12 +72,12 @@ export default {
   },
   methods:{
     async fetchPages() {
-        const page_data = await this.$f6snyApi.getPages();
+        const page_data = await this.$f6snyApi.pages().getPages();
         console.log(page_data)
         this.pages = page_data;
     },
     async fetchComments() {
-      this.comments = await this.$f6snyApi.getLatestComments();
+      this.comments = await this.$f6snyApi.comments().getLatestComments();
     },
     randomSize(actual, max){
       const base = 1.5;

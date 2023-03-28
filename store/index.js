@@ -35,9 +35,9 @@ export const mutations = {
 
 export const actions ={
     async nuxtServerInit({ commit }){
-        commit('setTags', await this.$f6snyApi.getTags());
+        commit('setTags', await this.$f6snyApi.tags().getTags());
     },
     async updateCounters({commit}){
-        commit('setCounters', await this.$f6snyApi.getCounters());
+        commit('setCounters', await this.$f6snyApi.global().getCounters());
     }
 }

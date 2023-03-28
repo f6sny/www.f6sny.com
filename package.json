@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@6degrees/f6snypi": "^1.0.0",
     "@meilisearch/instant-meilisearch": "^0.11.1",
     "@nuxt/components": "^2.2.1",
     "@nuxtjs/auth": "^4.9.1",

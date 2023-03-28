@@ -110,7 +110,7 @@ export default {
     },
   },
   async fetch() {
-    const data = await this.$f6snyApi.getTags();
+    const data = await this.$f6snyApi.tags().getTags();
     this.options = data.map(element => {
       return {
         text: `#${element.title}`,

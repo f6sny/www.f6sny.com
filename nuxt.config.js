@@ -36,7 +36,7 @@ export default {
 	plugins: [
         '~/plugins/vue-observe-visibility.client',
 		'~/plugins/meilisearch',
-        '~/plugins/repository',
+        '~/plugins/f6snypi',
 		'~/plugins/bootstrap.client'
 	],
 
