@@ -3,10 +3,10 @@
     <Header />
     <div class="container">
       <div class="row">
-        <div class="col col-md-8 py-3">
+        <div class="col col-md-8 py-3 offset-md-1">
           <Nuxt keep-alive />
         </div>
-        <div class="col col-md-4">
+        <div class="col col-md-3">
           <Sidebar />
           <Footer />
         </div>
