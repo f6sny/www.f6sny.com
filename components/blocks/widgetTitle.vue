@@ -5,13 +5,13 @@
 	</div>
 </template>
 
-<script>
+<script> 
 export default {
     props: {
         title: String,
         myclass: {
             type: String,
-            required: true
+            default: "h4"
         },
 
     }

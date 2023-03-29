@@ -23,6 +23,10 @@ export default {
 				hid: 'description', name: 'description', content: ''}],
 		link: [
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+			{rel: 'apple-touch-icon',sizes: "180x180", type: 'image/x-icon', href: '/assets/img/icons/apple-touch-icon.png'},
+			{rel: 'icon', sizes:"32x32", type: 'image/png', href: '/assets/img/icons/favicon-32x32.png'},
+			{rel: 'icon', sizes:"16x16", type: 'image/png', href: '/assets/img/icons/favicon-16x16.png'},
+			{rel: 'manifest',  href: '/assets/img/icons/site.webmanifest'},
             { rel: 'stylesheet', href: 'https://pro.fontawesome.com/releases/v5.15.1/css/all.css'}, //add for example your Google Fonts link here
             { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:300'},
             { rel: 'stylesheet', href: '//fonts.googleapis.com/earlyaccess/notonaskharabic.css'},
