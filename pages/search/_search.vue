@@ -34,7 +34,7 @@ export default {
     };
   },
   async fetch() {
-    const data = await this.$f6snyApi.searchJokesByKeywords(
+    const data = await this.$f6snyApi.jokes().searchJokesByKeywords(
       this.search_word,
       this.results_retreived
     );

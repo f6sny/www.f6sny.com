@@ -93,12 +93,12 @@ export default {
   },
   methods: {
       async getUser(){
-        const user_data = await this.$f6snyApi.getUserByUsername(this.$route.params.username)
+        const user_data = await this.$f6snyApi.users().getUserByUsername(this.$route.params.username)
         this.user_info = user_data[0];
-        console.log(user_data)
+        console.log('got user')
       },
       async getJokes(){
-          const joke_data = await this.$f6snyApi.getUserJokesByID(this.user_info.id, this.jokes_retreived) 
+          const joke_data = await this.$f6snyApi.jokes().getUserJokesByID(this.user_info.id, this.jokes_retreived) 
             this.jokes = this.jokes.concat(joke_data);
             this.jokes_retreived += joke_data.length;
       },

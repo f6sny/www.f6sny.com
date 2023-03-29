@@ -29,7 +29,7 @@ export default {
         async requestReset() {
             this.error = null;
             try {
-                let response = await this.$f6snyApi.forgotPassword(this.identifier);
+                let response = await this.$f6snyApi.users().forgotPassword(this.identifier);
                 this.identifier = '';
                 this.success = `تم إرسال رسالة إلى بريدك الإلكتروني، شيكها وحياك الله`; 
             } 

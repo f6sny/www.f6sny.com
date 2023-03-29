@@ -91,7 +91,6 @@ export default {
             const data = await this.$f6snyApi.postJoke(joke);
 
             console.log('joke submitted');
-            console.log(data);
 
             this.success = "هههههههههه حلوة حلوة هات غيرها بالله";
 
@@ -110,8 +109,9 @@ export default {
     },
   },
   async fetch() {
-    const data = await this.$f6snyApi.tags().getTags();
-    this.options = data.map(element => {
+    // maybe get the version in state
+    const tags = this.$store.state.tags;
+    this.options = tags.map(element => {
       return {
         text: `#${element.title}`,
         value: element.id

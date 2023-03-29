@@ -15,7 +15,3 @@ export default {
     props: ['title', 'description', 'small' ]
 }
 </script>
-
-<style>
-
-</style>

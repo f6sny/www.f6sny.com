@@ -54,12 +54,12 @@ export default {
 
   methods: {
       async getJokes(){
-        const joke_data = await this.$f6snyApi.getTagJokesBySlug(this.$route.params.tag, this.jokes_retreived) 
+        const joke_data = await this.$f6snyApi.jokes().getTagJokesBySlug(this.$route.params.tag, this.jokes_retreived) 
         this.jokes = this.jokes.concat(joke_data);
         this.jokes_retreived += joke_data.length;
       },
       async getTag(){
-        const tag_data = await this.$f6snyApi.getTagBySlug(this.$route.params.tag);
+        const tag_data = await this.$f6snyApi.tags().getTagBySlug(this.$route.params.tag);
         this.tag_info = tag_data[0];
       },
     lazyLoadJokes(isVisible) {

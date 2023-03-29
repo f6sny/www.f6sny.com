@@ -64,12 +64,12 @@ export default {
 		},
 
 		async get_joke() {
-			const data = await this.$f6snyApi.getJokeBySlug(this.slug);
+			const data = await this.$f6snyApi.jokes().getJokeBySlug(this.slug);
 			this.joke = data[0];
 		},
 		async get_comments() {
 			// we have to add get comments here.
-			const result = await this.$f6snyApi.getComments(this.joke.id);
+			const result = await this.$f6snyApi.comments().getJokeComments(this.joke.id);
 			this.comments = this.quickSort(result);
 		},
 		quickSort(array) {

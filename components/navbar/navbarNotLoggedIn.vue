@@ -13,7 +13,7 @@
             <form v-if="!success" ref="form" method="post">
               <div class="mb-3" v-if="registeration_mode">
                 <label for="username-input" class="form-label">اسم المستخدم</label>
-                <input v-model="username" type="text" class="form-control" name="username" id="username-input" aria-describedby="usernameHelp" required>
+                <input v-model="username" autocomplete="username" type="text" class="form-control" name="username" id="username-input" aria-describedby="usernameHelp" required>
               </div>
 
               <div class="mb-3" v-if="registeration_mode">
@@ -31,7 +31,7 @@
 
               <div class="mb-3">
                 <label for="password-input" class="form-label">كلمة السر</label>
-                <input v-model="password" type="password" class="form-control" name="password" id="password-input" aria-describedby="identifierHelp" required>
+                <input v-model="password" autocomplete="password" type="password" class="form-control" name="password" id="password-input" aria-describedby="identifierHelp" required>
                 <div id="emailHelp" class="form-text">
                   <small><nuxt-link class="text-muted" to="#">نسيت كلمة المرور؟</nuxt-link></small>
                 </div>
@@ -102,7 +102,6 @@ export default {
             password: this.password,
           },
         });
-        console.log(response)
         Cookie.set('auth', response.jwt)
         this.$store.dispatch('updateCounters');
         this.$router.push("/");

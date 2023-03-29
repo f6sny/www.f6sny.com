@@ -41,14 +41,11 @@ export default {
         }
         try {
             console.log('before request');
-            console.log('identifier is '+ this.password);
 
-            let reset_response = await this.$f6snyApi.resetPassword(data);
+            let reset_response = await this.$f6snyApi.users().resetPassword(data);
             console.log('after request');
-            console.log(reset_response)
             this.password2 = '';
             this.success = `تم تغيير كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة`;
-
 
             let response = await this.$auth.loginWith("local", {
                 data: {
@@ -61,8 +58,8 @@ export default {
             this.$store.dispatch('updateCounters');
             this.$router.push("/");
         } 
-        catch (e) {
-            this.error = e.response.data.message[0].messages[0].message;
+        catch (error) {
+            this.error = error.response.data.message[0].messages[0].message;
         }
     },
   },

@@ -60,7 +60,6 @@ export default {
 
   },
   mounted(){
-        console.log('mounted navbar')
         this.$store.dispatch('nuxtServerInit');
         this.$store.dispatch('updateCounters');
   },

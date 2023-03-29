@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         async getPage(){
-            const page_data = await this.$f6snyApi.getPageBySlug(this.$route.params.slug)
+            const page_data = await this.$f6snyApi.pages().getPageBySlug(this.$route.params.slug)
             this.page = page_data[0];
         },
     }

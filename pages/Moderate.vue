@@ -74,7 +74,6 @@ export default {
     };
   },
   mounted() {
-    console.log('mounted')
     this.fetchPending();
   },
   computed: {
@@ -82,9 +81,8 @@ export default {
   methods: {
     async fetchPending() {
         try{
-            this.pending = await this.$f6snyApi.getPendingJokes();
+            this.pending = await this.$f6snyApi.jokes().getPendingJokes();
             console.log('now should be fetching pending')
-            console.log(this.pending);
         }catch(err){
             this.pending =  {};
         }
@@ -95,7 +93,7 @@ export default {
         console.log('like triggered')
         // record to cookie or session, id of the joke liked
         try{
-            const data = await this.$f6snyApi.vote(this.pending.id,"up")
+            const data = await this.$f6snyApi.jokes().vote(this.pending.id,"up")
             this.success = "صوتك وصل يالحب";
             console.log('before dispatch')
             this.$store.dispatch('updateCounters');
@@ -115,7 +113,7 @@ export default {
         console.log('dislike triggered')
         // record to cookie or session, id of the joke liked
         try{
-            const data = await this.$f6snyApi.vote(this.pending.id,"down")
+            const data = await this.$f6snyApi.jokes().vote(this.pending.id,"down")
             this.success = "صوتك وصل يالحب";
             this.$store.dispatch('updateCounters');
             await new Promise(resolve => setTimeout(resolve, 3000));
@@ -132,7 +130,7 @@ export default {
         console.log('neutral triggered')
         // record to cookie or session, id of the joke liked
         try{
-            const data = await this.$f6snyApi.vote(this.pending.id,"neutral")
+            const data = await this.$f6snyApi.jokes().vote(this.pending.id,"neutral")
             this.success = "صوتك وصل يالحب";
             this.$store.dispatch('updateCounters');
             await new Promise(resolve => setTimeout(resolve, 3000));

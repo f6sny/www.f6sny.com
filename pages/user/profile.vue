@@ -94,22 +94,15 @@ export default {
     },
     methods: {
         async getUser(){
-            const user_data = await this.$f6snyApi.getCurrentUser();
-            this.user_data.id = user_data.id;
-            this.user_data.first_name = user_data.first_name;
-            this.user_data.last_name = user_data.last_name;
-            this.user_data.email = user_data.email;
-            this.user_data.biography = user_data.biography;
-            this.user_data.date_of_birth = new Date(user_data.date_of_birth);
-            this.user_data.gender = user_data.gender;
-            this.user_data.adult_content = user_data.adult_content;
-            console.log(user_data)
+            const user_data = await this.$f6snyApi.users().getCurrentUser();
+            const { id, first_name, last_name, email, biography, date_of_birth, gender, adult_content } = user_data;
+            this.user_data = {id,first_name, last_name, email, biography, date_of_birth: new Date(date_of_birth), gender, adult_content};
+            console.log('got user');
         },
         async updateUser(){
             this.error = null;
             try {
-                console.log(this.user_data)
-                await this.$f6snyApi.updateUserData(this.user_data.id, this.user_data);
+                await this.$f6snyApi.users().updateUserData(this.user_data.id, this.user_data);
                 this.success = `تم تحديث بياناتك بنجاح`;
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 this.success = null;

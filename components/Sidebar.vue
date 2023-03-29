@@ -73,7 +73,6 @@ export default {
   methods:{
     async fetchPages() {
         const page_data = await this.$f6snyApi.pages().getPages();
-        console.log(page_data)
         this.pages = page_data;
     },
     async fetchComments() {

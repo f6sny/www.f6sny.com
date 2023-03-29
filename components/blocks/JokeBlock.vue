@@ -73,7 +73,7 @@ export default {
         async like(){
             // record to cookie or session, id of the joke liked
             try{
-                const data = await this.$f6snyApi.vote(this.joke.id,"up")
+                const data = await this.$f6snyApi.jokes().vote(this.joke.id,"up")
                 this.success = "صوتك وصل يالحب";
                 this.$store.dispatch('updateCounters');
                 await new Promise(resolve => setTimeout(resolve, 3000));
@@ -91,7 +91,7 @@ export default {
             console.log('dislike triggered')
             // record to cookie or session, id of the joke liked
             try{
-                const data = await this.$f6snyApi.vote(this.joke.id,"down")
+                const data = await this.$f6snyApi.jokes().vote(this.joke.id,"down")
                 this.success = "صوتك وصل يالحب";
                 this.$store.dispatch('updateCounters');
                 await new Promise(resolve => setTimeout(resolve, 3000));
@@ -107,7 +107,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
