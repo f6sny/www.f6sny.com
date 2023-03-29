@@ -1,22 +1,22 @@
 <template>
   <div>
     <Header />
-    <div class="container">
-      <div class="row">
-        <div class="col col-md-8 py-3 offset-md-1">
-          <Nuxt keep-alive />
-        </div>
-        <div class="col col-md-3">
-          <Sidebar />
-          <Footer />
+    <section id="main" class="bg-secondary" style="--bs-bg-opacity: .01;">
+      <div class="container">
+        <div class="row">
+          <div class="col col-md-9 py-3">
+            <Nuxt keep-alive />
+          </div>
+          <div class="col col-md-3">
+            <Sidebar />
+            <Footer />
+          </div>
         </div>
       </div>
-
-        <NavbarNewJokeModal />
-        <NavbarNotLoggedIn v-if="!isAuthenticated" />
-        <NavbarLoggedIn v-if="isAuthenticated" />
-      </div>
-    
+    </section>
+    <NavbarNewJokeModal />
+    <NavbarNotLoggedIn v-if="!isAuthenticated" />
+    <NavbarLoggedIn v-if="isAuthenticated" />
   </div>
 </template>
 

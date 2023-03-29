@@ -1,50 +1,63 @@
 <template>
   <aside id="sidebar">
     
-    <section class="widget tags mt-2 p-3 mb-4">
-      <h4>سحابة التصنيفات</h4>
-      <hr class="my-1" />
+    <section class="widget tags my-5 pe-3">
+      <blocks-widget-title title="سحابة التصنيفات" />
       <ul v-if="tags" style="" class="list-inline p-0 m-0 text-center">
         <li v-bind:key="tag.id" v-for="tag in tags" :style="`font-size: ${ randomSize(tag.jokes,tag.jokes_max) }em;`" class="list-inline-item">
-          <NuxtLink :to="`/tag/${tag.slug}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
-          
+          <NuxtLink class="text-decoration-none" :to="`/tag/${tag.slug}`" :style="`color: ${tag.hex_color}`">{{ `#${tag.title}` }}</NuxtLink>  
+        
           </li>
       </ul>
     </section>
 
-    <section class="widget p-3 mb-4">
-      <h4>إحصائيات</h4>
-      <hr class="my-1" />
-      <ul v-if="counters" class="list-unstyled">
-        <li class="text-success"><i class="fa fa-check"></i> {{counters.total_jokes - counters.pending_jokes - counters.deleted_jokes}} نكتة مفعلة</li>
-        <li class="text-warning"><i class="far fa-clock"></i> {{ counters.pending_jokes }} نكتة بالإنتظار</li>
-        <li class="text-error"><i class="far fa-trash"></i> {{ counters.deleted_jokes }} نكتة ممسوحة</li>
-        <li class="text-info"><i class="fa fa-user"></i> {{ counters.users }} عضو</li>
-        <li><i class="fa fa-comments"></i> {{ counters.comments }} تعليق</li>
-        <!-- <li><i class="fa fa-signal"></i> 661152 زيارة</li>
-        <li>تم تحميل الصفحة في 0.4694 ثانية</li> -->
-      </ul>
-    </section>
-
-    <section class="widget comments p-3 mb-4">
-      <h4>آخر التعليقات</h4>
-      <hr class="my-1" />
-      <ul class="list-unstyled">
-        <li v-bind:key="comment.id" v-for="comment in comments" >
-          <nuxt-link :to="`/joke/${comment.related[0].slug}#comment-${comment.id}`" class="text-muted"><i class="fa fa-comment"></i> <strong v-if="comment.authorName"> {{ comment.authorName }}</strong> {{ comment.content }}</nuxt-link>
+    <section class="widget comments mb-5 pe-3">
+      <blocks-widget-title title="آخر التعليقات" />
+      <ul class="list-unstyled p-0 m-0 small">
+        <li class="mb-2 lh-1" v-bind:key="comment.id" v-for="comment in comments" >
+          <nuxt-link class="link-secondary link-underline-opacity-25 d-inline-block text-truncate col-12" :to="`/joke/${comment.related[0].slug}#comment-${comment.id}`">
+            <i class="bi bi-chat-fill text-decoration-none ps-2"></i>
+            <strong v-if="comment.authorName">{{ comment.authorName }}: </strong> {{ comment.content }}
+          </nuxt-link>
         </li>
       </ul>
     </section>
 
-    <section class="widget p-3 mb-4">
-      <h4>روابط مهمة</h4>
-      <hr class="my-1" />
-      <ul class="list-unstyled text-small">
-        <li v-bind:key="page.id" v-for="page in pages"><nuxt-link :to="`/page/${page.slug}`"><i class="fas fa-exclamation-triangle"></i> {{ page.title }}</nuxt-link></li>  
-        <li><nuxt-link to="#"><i class="fas fa-exclamation-triangle"></i> القوانين والأحكام</nuxt-link></li>
-        <li><a href="https://github.com/f6sny"><i class="fab fa-github"></i> المشروع في GitHub</a></li>
-        <li><nuxt-link to="#"><i class="fas fa-envelope"></i> إتصل بنا</nuxt-link></li>
+    
+
+    <section class="widget links mb-5 pe-3">
+      <blocks-widget-title title="روابط مهمة" />
+      <ul class="list-unstyled small p-0 m-0">
+        <li v-bind:key="page.id" v-for="page in pages">
+          <nuxt-link class="link-secondary link-underline-opacity-25" :to="`/page/${page.slug}`"><i class="bi bi-link-45deg text-decoration-none ps-2"></i>{{ page.title }}</nuxt-link>
+        </li>  
+        <li>
+          <nuxt-link class="link-secondary link-underline-opacity-25" to="#"><i class="bi bi-exclamation-triangle-fill text-decoration-none ps-2"></i>القوانين والأحكام</nuxt-link>
+        </li>
+        <li>
+          <a class="link-secondary link-underline-opacity-25" href="https://github.com/f6sny"><i class="bi bi-github text-decoration-none ps-2"></i>المشروع في GitHub</a>
+        </li>
+        <li>
+          <nuxt-link class="link-secondary link-underline-opacity-25" to="#"><i class="bi bi-envelope-fill text-decoration-none ps-2"></i>إتصل بنا</nuxt-link>
+        </li>
       </ul>
+    </section>
+
+    <section class="widget statistics mb-3 small">
+      <div class="alert alert-info">
+        <blocks-widget-title myclass="h4" title="إحصائيات" />
+        <ul v-if="counters" class="list-unstyled p-0 m-0 small lh-lg">
+        <li class=""><i class="bi bi-check-lg ps-2"></i>{{counters.total_jokes - counters.pending_jokes - counters.deleted_jokes}} نكتة مفعلة</li>
+        <li class=""><i class="bi bi-clock ps-2"></i>{{ counters.pending_jokes }} نكتة بالإنتظار</li>
+        <li class=""><i class="bi bi-trash ps-2"></i>{{ counters.deleted_jokes }} نكتة ممسوحة</li>
+        <li class=""><i class="bi bi-person-fill ps-2"></i>{{ counters.users }} عضو</li>
+        <li class=""><i class="bi bi-chat-fill ps-2"></i>{{ counters.comments }} تعليق</li>
+        <!-- <li><i class="bi bi-signal"></i> 661152 زيارة</li>
+        <li>تم تحميل الصفحة في 0.4694 ثانية</li> -->
+      </ul>
+      </div>
+      
+      
     </section>
   </aside>
 </template>

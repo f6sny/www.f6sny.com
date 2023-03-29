@@ -22,7 +22,7 @@
               <li class="nav-item">
                 <a class="nav-link position-relative" href="/moderate">
                   مراقبة
-                  <span v-if="counters.pending_jokes" class="badge rounded-pill bg-danger">
+                  <span v-if="counters.pending_jokes" class="badge lh-1 text-bg-danger">
                     {{ counters.pending_jokes }}
                     <span class="visually-hidden">نكت تنتظر المراقبة</span>
                   </span>

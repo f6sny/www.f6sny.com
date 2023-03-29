@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline text-center avatar">
-        <img :src="(picture ? picture : 'https://placeholder.pics/svg/35')" height="35px" class="rounded-5" alt="...">
+        <img :src="(picture ? picture : 'https://placeholder.pics/svg/35')" height="35px" class="rounded-circle" alt="...">
     </div>
 </template>
 
