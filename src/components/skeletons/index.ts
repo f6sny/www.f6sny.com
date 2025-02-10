@@ -1,0 +1,5 @@
+export * from './TagsSkeleton'
+export * from './PagesSkeleton'
+export * from './StatsSkeleton'
+export * from './JokesSkeleton'
+export * from './CommentsSkeleton'
