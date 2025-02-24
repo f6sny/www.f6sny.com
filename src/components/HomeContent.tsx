@@ -6,11 +6,14 @@ import { toast } from "@/hooks/use-toast"
 import confetti from "canvas-confetti"
 import { JokeCard } from "@/components/JokeCard"
 import { JokeSkeletonList } from "@/components/skeletons"
-import { api } from '@/lib/api'
 import { LoadingCard } from "@/components/LoadingCard"
+import { strapi } from '@strapi/client';
+
+const client = strapi({ baseURL: 'http://localhost:1337/api' });
+
 
 export function HomeContent() {
-  const [jokes, setJokes] = useState<Joke[]>([])
+  const [jokes, setJokes] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -22,10 +25,36 @@ export function HomeContent() {
     try {
       setLoading(true)
       setError(null)
-      const data = await api.fetchJokes({ page: pageNum })
-      if (data.meta.pagination.page >= data.meta.pagination.pageCount) {
+      const jokes = client.collection('jokes');
+
+      const data = await jokes.find({
+        pagination: {
+          page: pageNum,
+          pageSize: 10,
+        },
+        sort: 'updatedAt:desc',
+        filters: {
+          joke_status: {
+            $notIn: ['deleted', 'pending']
+          }
+        },
+        populate: {
+          votes: {
+            count: false
+          },
+          tags: {
+            count:false
+          }
+        }
+      })
+
+      console.log('jokes', data.data)
+
+    
+      if (data.meta.pagination?.page && data.meta.pagination?.pageCount && data.meta.pagination?.page >= data.meta.pagination?.pageCount) {
         setHasMore(false)
       }
+      
       return data
     } catch (error) {
       console.error("Error fetching jokes:", error)
@@ -40,7 +69,8 @@ export function HomeContent() {
     const loadInitialJokes = async () => {
       const data = await fetchJokes(1)
       if (data) {
-        setJokes(data.data)
+        console.log(data.data)
+        setJokes(data.data as [])
         setInitialLoadDone(true)
       }
     }
@@ -54,8 +84,8 @@ export function HomeContent() {
         const data = await fetchJokes(nextPage)
         if (data && data.data.length > 0) {
           setJokes(prev => {
-            const existingIds = new Set(prev.map((joke: Joke) => joke.id))
-            const newJokes = data.data.filter((joke: Joke) => !existingIds.has(joke.id))
+            const existingIds = new Set(prev.map((joke: any) => joke.id))
+            const newJokes = data.data.filter((joke: any) => !existingIds.has(joke.id))
             return [...prev, ...newJokes]
           })
           setPage(nextPage)
@@ -65,18 +95,66 @@ export function HomeContent() {
     loadMoreJokes()
   }, [inView, loading, page, initialLoadDone])
 
-  const handleReaction = (jokeId: number, reaction: string) => {
-    if (reaction === "laugh") {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
+  const handleReaction = async (jokeId: string, reaction: string) => {
+    try {
+      const votes = client.collection('votes');
+      const voteValue = reaction === "laugh" ? "up" : reaction === "meh" ? "neutral" : "down";
+      const currentJoke = jokes.find(j => j.documentId === jokeId);
+
+      if (currentJoke?.hasVoted && currentJoke?.userVote) {
+        await votes.update(currentJoke.userVote.documentId, {
+          value: voteValue
+        });
+      } else {
+        await votes.create({
+          value: voteValue,
+          joke: jokeId
+        });
+      }
+
+      // Update local state to reflect the vote
+      setJokes(prev => prev.map(joke => {
+        if (joke.documentId !== jokeId) return joke;
+        
+        // Update votes array
+        const oldVotes = [...(joke.votes || [])];
+        if (joke.hasVoted) {
+          // Remove old vote
+          const oldVoteValue = joke.userVote?.value;
+          const oldVoteIndex = oldVotes.findIndex(v => v.value === oldVoteValue);
+          if (oldVoteIndex > -1) oldVotes.splice(oldVoteIndex, 1);
+        }
+        // Add new vote
+        oldVotes.push({ value: voteValue });
+
+        return {
+          ...joke,
+          hasVoted: true,
+          userVote: { value: voteValue },
+          votes: oldVotes
+        };
+      }));
+
+      if (reaction === "laugh") {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        })
+      }
+      
+      toast({
+        title: "تم التصويت بنجاح",
+        description: `شكراً لك على مشاركتك!`,
+      })
+    } catch (error) {
+      console.error('Failed to vote:', error)
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء التصويت، الرجاء المحاولة مرة أخرى",
+        variant: "destructive"
       })
     }
-    toast({
-      title: "Reaction Recorded",
-      description: `You reacted with ${reaction} to the joke!`,
-    })
   }
 
   const handleReport = (jokeId: number) => {
@@ -99,7 +177,7 @@ export function HomeContent() {
       <div className="space-y-6">
         {jokes.map((joke, index) => (
           <JokeCard
-            key={`joke-${joke.id}-${index}`}
+            key={`joke-${joke.documentId}`}
             joke={joke}
             onReaction={handleReaction}
             onReport={handleReport}

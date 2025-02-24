@@ -1,17 +1,12 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { api } from '@/lib/api'
+import { strapi } from '@strapi/client';
 
-interface Stats {
-  total_jokes: number
-  deleted_jokes: number
-  users: number
-  pending_jokes: number
-  visits: number
-}
+const client = strapi({ baseURL: 'http://localhost:1337/api' });
+
 
 interface StatsState {
-  stats: Stats | null
+  stats: any | null
   loading: boolean
   error: string | null
   fetchStats: () => Promise<void>
@@ -26,8 +21,10 @@ export const useStatsStore = create<StatsState>()(
       fetchStats: async () => {
         try {
           set({ loading: true, error: null })
-          const data = await api.fetchStats()
-          set({ stats: data, loading: false })
+          const data = await client.fetch('globalcall/counters', { method: 'GET' });
+          const jsonData = await data.json();
+          console.log('stats', jsonData)
+          set({ stats: jsonData, loading: false })
         } catch (error) {
           set({ error: 'Failed to fetch stats', loading: false })
           console.error('Error fetching stats:', error)

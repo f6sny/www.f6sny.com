@@ -1,9 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { api } from '@/lib/api'
+import { strapi } from '@strapi/client';
+
+const client = strapi({ baseURL: 'http://localhost:1337/api' });
 
 interface TagsState {
-  tags: TagData[]
+  tags: any[]
   loading: boolean
   error: string | null
   fetchTags: () => Promise<void>
@@ -18,7 +20,15 @@ export const useTagsStore = create<TagsState>()(
       fetchTags: async () => {
         try {
           set({ loading: true, error: null })
-          const data = await api.fetchTags()
+          const data = await client.collection('tags').find({
+            populate: {
+              jokes:{
+                count: true,
+              }
+            },
+          })
+
+          console.log(data.data)
           set({ tags: data.data, loading: false })
         } catch (error) {
           set({ error: 'Failed to fetch tags', loading: false })

@@ -14,6 +14,14 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { StatsSkeleton, PagesSkeleton } from '@/components/skeletons'
+interface CustomPage {
+  title: string
+  slug: string
+}
+
+interface SidebarContentProps {
+  customPages: CustomPage[]
+}
 
 export function SidebarContent({ customPages }: SidebarContentProps) {
   const { open } = useSidebar()

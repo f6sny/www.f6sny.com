@@ -8,33 +8,50 @@ import confetti from "canvas-confetti"
 import { JokeCard } from "@/components/JokeCard"
 import { TagHeader } from "@/components/TagHeader"
 import { JokeSkeletonList } from "@/components/skeletons"
-import { api } from '@/lib/api'
 import { LoadingCard } from "@/components/LoadingCard"
+import { strapi } from '@strapi/client';
+
+const client = strapi({ baseURL: 'http://localhost:1337/api' });
+
 
 export function TagPageContent() {
   const { slug } = useParams()
-  const [jokes, setJokes] = useState<Joke[]>([])
+  const [jokes, setJokes] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [initialLoadDone, setInitialLoadDone] = useState(false)
   const { ref, inView } = useInView()
   const [hasMore, setHasMore] = useState(true)
-  const [tagInfo, setTagInfo] = useState<TagResponse['data'][0] | null>(null)
+  const [tagInfo, setTagInfo] = useState<any['data'][0] | null>(null)
 
   const fetchJokes = async (pageNum: number) => {
     try {
       setLoading(true)
       setError(null)
-      const data = await api.fetchJokes({ 
-        page: pageNum,
-        pageSize: 10,
+      const data = await client.collection('jokes').find({ 
+        pagination: {
+          page: pageNum,
+          pageSize: 10,
+        },
+        sort: 'updatedAt:desc',
         filters: { 
-          tags: { slug: { $eq: slug } }
+          tags: { slug: { $eq: [decodeURIComponent(slug as string)] } },
+          joke_status: {
+            $notIn: ['deleted', 'pending']
+          }
+        },
+        populate:{
+          tags:{
+            count:false
+          },
+          votes:{
+            count:false
+          }
         }
       })
       
-      if (data.meta.pagination.page >= data.meta.pagination.pageCount) {
+      if (data.meta?.pagination?.page && data.meta?.pagination?.pageCount && data.meta?.pagination?.page >= data.meta?.pagination?.pageCount) {
         setHasMore(false)
       }
       return data
@@ -66,7 +83,7 @@ export function TagPageContent() {
         if (data && data.data.length > 0) {
           setJokes(prev => {
             const existingIds = new Set(prev.map(joke => joke.id))
-            const newJokes = data.data.filter((joke: Joke) => !existingIds.has(joke.id))
+            const newJokes = data.data.filter((joke) => !existingIds.has(joke.id))
             return [...prev, ...newJokes]
           })
           setPage(nextPage)
@@ -79,7 +96,18 @@ export function TagPageContent() {
   useEffect(() => {
     const fetchTagInfo = async () => {
       try {
-        const data = await api.fetchTagInfo(slug as string)
+        const data = await client.collection('tags').find({ 
+          filters: { 
+            slug: { 
+              $eq: decodeURIComponent(slug as string) 
+            } 
+          },
+          populate:{
+            jokes:{
+              count: true
+            }
+          }
+        })
         if (data.data.length === 0) {
           setError('لم نتمكن من العثور على التصنيف المطلوب')
           return
@@ -94,18 +122,66 @@ export function TagPageContent() {
     if (slug) fetchTagInfo()
   }, [slug])
 
-  const handleReaction = (jokeId: number, reaction: string) => {
-    if (reaction === "laugh") {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
+  const handleReaction = async (jokeId: string, reaction: string) => {
+    try {
+      const votes = client.collection('votes');
+      const voteValue = reaction === "laugh" ? "up" : reaction === "meh" ? "neutral" : "down";
+      const currentJoke = jokes.find(j => j.documentId === jokeId);
+
+      if (currentJoke?.hasVoted && currentJoke?.userVote) {
+        await votes.update(currentJoke.userVote.documentId, {
+          value: voteValue
+        });
+      } else {
+        await votes.create({
+          value: voteValue,
+          joke: jokeId
+        });
+      }
+
+      // Update local state to reflect the vote
+      setJokes(prev => prev.map(joke => {
+        if (joke.documentId !== jokeId) return joke;
+        
+        // Update votes array
+        const oldVotes = [...(joke.votes || [])];
+        if (joke.hasVoted) {
+          // Remove old vote
+          const oldVoteValue = joke.userVote?.value;
+          const oldVoteIndex = oldVotes.findIndex(v => v.value === oldVoteValue);
+          if (oldVoteIndex > -1) oldVotes.splice(oldVoteIndex, 1);
+        }
+        // Add new vote
+        oldVotes.push({ value: voteValue });
+
+        return {
+          ...joke,
+          hasVoted: true,
+          userVote: { value: voteValue },
+          votes: oldVotes
+        };
+      }));
+
+      if (reaction === "laugh") {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        })
+      }
+      
+      toast({
+        title: "تم التصويت بنجاح",
+        description: `شكراً لك على مشاركتك!`,
+      })
+    } catch (error) {
+      console.error('Failed to vote:', error)
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء التصويت، الرجاء المحاولة مرة أخرى",
+        variant: "destructive"
       })
     }
-    toast({
-      title: "Reaction Recorded",
-      description: `You reacted with ${reaction} to the joke!`,
-    })
   }
 
   const handleReport = (jokeId: number) => {

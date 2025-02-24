@@ -77,11 +77,17 @@ export function UserPageContent() {
     const fetchUserInfo = async () => {
       try {
         const data = await api.fetchUserInfo(username as string)
-        if (!data) {
+        if (!data?.data?.[0]) {
           setError('لم نتمكن من العثور على المستخدم المطلوب')
           return
         }
-        setUserInfo(data)
+        const user = data.data[0]
+        setUserInfo({
+          ...user,
+          jokes: {
+            count: data.meta?.pagination?.total || 0
+          }
+        })
       } catch (error) {
         console.error("Error fetching user info:", error)
         setError('Failed to fetch user info')

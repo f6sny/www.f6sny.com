@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react"
-import { api } from '@/lib/api'
+import { strapi } from '@strapi/client';
 
-interface Stats {
-  total_jokes: number
-  deleted_jokes: number
-  users: number
-  pending_jokes: number
-  visits: number
-}
+const client = strapi({ baseURL: 'http://localhost:1337/api' });
+
 
 export function useStats() {
-  const [stats, setStats] = useState<Stats | null>(null)
+  const [stats, setStats] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data = await api.fetchStats()
-        setStats(data)
+        const data = await client.fetch('globalcall/counters', { method: 'GET' });
+        console.log('stats', await data.json())
+        setStats(await data.json())
       } catch (error) {
         console.error('Failed to fetch stats:', error)
       } finally {
