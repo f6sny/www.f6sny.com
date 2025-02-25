@@ -5,14 +5,12 @@ import { useParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
 import { toast } from "@/hooks/use-toast"
 import confetti from "canvas-confetti"
-import { JokeCard } from "@/components/JokeCard"
-import { TagHeader } from "@/components/TagHeader"
+import { JokeCard } from "@/components/jokes/joke-card"
+import { TagHeader } from "@/components/tags/page-header"
 import { JokeSkeletonList } from "@/components/skeletons"
-import { LoadingCard } from "@/components/LoadingCard"
-import { strapi } from '@strapi/client';
-
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
-
+import { LoadingCard } from "@/components/jokes/loading-card"
+import client from '@/lib/api'
+import { JokeHandlers } from "@/lib/handlers"
 
 export function TagPageContent() {
   const { slug } = useParams()
@@ -83,7 +81,7 @@ export function TagPageContent() {
         if (data && data.data.length > 0) {
           setJokes(prev => {
             const existingIds = new Set(prev.map(joke => joke.id))
-            const newJokes = data.data.filter((joke) => !existingIds.has(joke.id))
+            const newJokes = data.data.filter((joke: any) => !existingIds.has(joke.id))
             return [...prev, ...newJokes]
           })
           setPage(nextPage)
@@ -96,99 +94,28 @@ export function TagPageContent() {
   useEffect(() => {
     const fetchTagInfo = async () => {
       try {
-        const data = await client.collection('tags').find({ 
-          filters: { 
-            slug: { 
-              $eq: decodeURIComponent(slug as string) 
-            } 
-          },
-          populate:{
-            jokes:{
+        const data = await client.collection('tags').find({
+          filters: { slug: { $eq: decodeURIComponent(slug as string) } },
+          populate: {
+            jokes: {
               count: true
             }
           }
         })
-        if (data.data.length === 0) {
-          setError('لم نتمكن من العثور على التصنيف المطلوب')
-          return
+        if (data.data.length > 0) {
+          setTagInfo(data.data[0])
         }
-        setTagInfo(data.data[0])
       } catch (error) {
         console.error("Error fetching tag info:", error)
-        setError('Failed to fetch tag info')
       }
     }
-
+    
     if (slug) fetchTagInfo()
   }, [slug])
 
   const handleReaction = async (jokeId: string, reaction: string) => {
-    try {
-      const votes = client.collection('votes');
-      const voteValue = reaction === "laugh" ? "up" : reaction === "meh" ? "neutral" : "down";
-      const currentJoke = jokes.find(j => j.documentId === jokeId);
-
-      if (currentJoke?.hasVoted && currentJoke?.userVote) {
-        await votes.update(currentJoke.userVote.documentId, {
-          value: voteValue
-        });
-      } else {
-        await votes.create({
-          value: voteValue,
-          joke: jokeId
-        });
-      }
-
-      // Update local state to reflect the vote
-      setJokes(prev => prev.map(joke => {
-        if (joke.documentId !== jokeId) return joke;
-        
-        // Update votes array
-        const oldVotes = [...(joke.votes || [])];
-        if (joke.hasVoted) {
-          // Remove old vote
-          const oldVoteValue = joke.userVote?.value;
-          const oldVoteIndex = oldVotes.findIndex(v => v.value === oldVoteValue);
-          if (oldVoteIndex > -1) oldVotes.splice(oldVoteIndex, 1);
-        }
-        // Add new vote
-        oldVotes.push({ value: voteValue });
-
-        return {
-          ...joke,
-          hasVoted: true,
-          userVote: { value: voteValue },
-          votes: oldVotes
-        };
-      }));
-
-      if (reaction === "laugh") {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-        })
-      }
-      
-      toast({
-        title: "تم التصويت بنجاح",
-        description: `شكراً لك على مشاركتك!`,
-      })
-    } catch (error) {
-      console.error('Failed to vote:', error)
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء التصويت، الرجاء المحاولة مرة أخرى",
-        variant: "destructive"
-      })
-    }
-  }
-
-  const handleReport = (jokeId: number) => {
-    toast({
-      title: "Joke Reported",
-      description: "Thank you for your feedback. We'll review this joke.",
-    })
+    const updateState = JokeHandlers.getJokeListUpdater(setJokes);
+    await JokeHandlers.handleReaction(jokeId, reaction, updateState);
   }
 
   if (loading && !initialLoadDone) {
@@ -215,7 +142,7 @@ export function TagPageContent() {
             key={`joke-${joke.id}-${index}`}
             joke={joke}
             onReaction={handleReaction}
-            onReport={handleReport}
+            onReport={JokeHandlers.handleReport}
           />
         ))}
       </div>

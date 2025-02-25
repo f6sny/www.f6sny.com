@@ -1,9 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPage, getAllPages } from '@/lib/pages'
-import { PageContent } from '@/components/PageContent'
-import type { Page } from '@/types/page'
-
+import { PageContent } from '@/components/pages/page-content'
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
     const { slug } = await params

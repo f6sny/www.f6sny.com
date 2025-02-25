@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { TagPageContent } from '@/components/TagPageContent'
-import { generateMetadata } from "@/components/Metadata"
+import { TagPageContent } from '@/components/tags/page-content'
+import { generateMetadata } from "@/components/app/metadata"
 
 export { generateMetadata }
 

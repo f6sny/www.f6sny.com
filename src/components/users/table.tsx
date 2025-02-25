@@ -33,7 +33,7 @@ import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChevronDown } from "lucide-react"
 import { api } from '@/lib/api'
-import { LoadingCard } from "@/components/LoadingCard"
+import { LoadingCard } from "@/components/jokes/loading-card"
 
 export const columns: ColumnDef<User>[] = [
   {

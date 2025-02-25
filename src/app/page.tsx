@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { HomeContent } from '@/components/HomeContent'
+import { HomeContent } from '@/components/app/home-content'
 
 export const metadata: Metadata = {
   title: "إضحك لين تفطس | فطسني",

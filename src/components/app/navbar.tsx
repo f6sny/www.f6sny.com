@@ -12,12 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import SearchBar from "@/components/SearchBar"
+import SearchBar from "@/components/app/navbar-searchbar"
 import { useState } from "react"
-import { AddJokeModal } from "@/components/AddJokeModal"
+import { AddJokeModal } from "@/components/jokes/add-joke-modal"
 import { Plus, Tags } from "lucide-react"
 import { useTags } from "@/hooks/use-tags"
-import { Badge } from "@/components/ui/badge"
 
 export default function Navbar() {
   const isLoggedIn = true // Replace with actual authentication logic
@@ -30,9 +29,9 @@ export default function Navbar() {
       <div className="w-full px-4 py-2">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" />
+            <SidebarTrigger />
             <Link href="/" className="text-xl font-bold text-gray-800">
-              فطسني
+              الرئيسية
             </Link>
           </div>
 

@@ -8,6 +8,22 @@ import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useEffect, useState } from 'react'
 
+interface Page {
+  slug: string
+  content: string
+  frontmatter: PageFrontmatter
+}
+
+interface PageFrontmatter {
+  title: string
+  description: string
+  date?: string
+  slug?: string
+}
+interface PageContentProps {
+  page: Page
+} 
+
 export function PageContent({ page }: PageContentProps) {
   const [mdxSource, setMdxSource] = useState<any>(null)
 

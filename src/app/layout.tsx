@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Rubik } from "next/font/google"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import Navbar from "@/components/Navbar"
-import Sidebar from "@/components/Sidebar"
+import Navbar from "@/components/app/navbar"
 import type React from "react"
 import { Toaster } from "@/components/ui/toaster"
-import { useHydrateStores } from '@/hooks/use-hydrate-stores'
-import { StoreHydrator } from "@/components/StoreHydrator"
+import { StoreHydrator } from "@/components/app/store-hydrator"
+import { cookies } from "next/headers"
 
 import { cn } from "@/lib/utils";
+import { AppSidebar } from "@/components/app/sidebar";
+import { getAllPages } from '@/lib/pages'
 
 const rubik = Rubik({ 
   subsets: ["latin"],
@@ -18,21 +18,42 @@ const rubik = Rubik({
   // Optional: you can specify display
   display: 'swap',
 })
+interface CustomPage {
+  title: string
+  slug: string
+}
 
-export default function RootLayout({
+async function getCustomPages(): Promise<CustomPage[]> {
+  const pages = await getAllPages()
+  return pages.map(page => ({
+    title: page.frontmatter.title,
+    slug: page.slug
+  }))
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Get the sidebar state from cookies
+  const cookieStore = await cookies()
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
+
+  const customPages = await getCustomPages()
+
   return (
     <html lang="ar" dir="rtl">
       <body className={cn(rubik.className, "bg-gray-50")}>
         <StoreHydrator />
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar customPages={customPages} />
           <div className="flex flex-col md:flex-row min-h-screen w-full bg-red-200">
-            <Sidebar />
+            
             <div className="flex-1 flex flex-col w-full bg-yellow-200">
+            
               <Navbar />
+              
               <main className="flex-1 w-full px-4 py-8 overflow-auto">{children}</main>
             </div>
           </div>

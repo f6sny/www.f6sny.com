@@ -4,13 +4,11 @@ import { useState, useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { toast } from "@/hooks/use-toast"
 import confetti from "canvas-confetti"
-import { JokeCard } from "@/components/JokeCard"
+import { JokeCard } from "@/components/jokes/joke-card"
 import { JokeSkeletonList } from "@/components/skeletons"
-import { LoadingCard } from "@/components/LoadingCard"
-import { strapi } from '@strapi/client';
-
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
-
+import { LoadingCard } from "@/components/jokes/loading-card"
+import client from '@/lib/api'
+import { JokeHandlers } from "@/lib/handlers"
 
 export function HomeContent() {
   const [jokes, setJokes] = useState<any[]>([])
@@ -96,65 +94,8 @@ export function HomeContent() {
   }, [inView, loading, page, initialLoadDone])
 
   const handleReaction = async (jokeId: string, reaction: string) => {
-    try {
-      const votes = client.collection('votes');
-      const voteValue = reaction === "laugh" ? "up" : reaction === "meh" ? "neutral" : "down";
-      const currentJoke = jokes.find(j => j.documentId === jokeId);
-
-      if (currentJoke?.hasVoted && currentJoke?.userVote) {
-        await votes.update(currentJoke.userVote.documentId, {
-          value: voteValue
-        });
-      } else {
-        await votes.create({
-          value: voteValue,
-          joke: jokeId
-        });
-      }
-
-      // Update local state to reflect the vote
-      setJokes(prev => prev.map(joke => {
-        if (joke.documentId !== jokeId) return joke;
-        
-        // Update votes array
-        const oldVotes = [...(joke.votes || [])];
-        if (joke.hasVoted) {
-          // Remove old vote
-          const oldVoteValue = joke.userVote?.value;
-          const oldVoteIndex = oldVotes.findIndex(v => v.value === oldVoteValue);
-          if (oldVoteIndex > -1) oldVotes.splice(oldVoteIndex, 1);
-        }
-        // Add new vote
-        oldVotes.push({ value: voteValue });
-
-        return {
-          ...joke,
-          hasVoted: true,
-          userVote: { value: voteValue },
-          votes: oldVotes
-        };
-      }));
-
-      if (reaction === "laugh") {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-        })
-      }
-      
-      toast({
-        title: "تم التصويت بنجاح",
-        description: `شكراً لك على مشاركتك!`,
-      })
-    } catch (error) {
-      console.error('Failed to vote:', error)
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء التصويت، الرجاء المحاولة مرة أخرى",
-        variant: "destructive"
-      })
-    }
+    const updateState = JokeHandlers.getJokeListUpdater(setJokes);
+    await JokeHandlers.handleReaction(jokeId, reaction, updateState);
   }
 
   const handleReport = (jokeId: number) => {

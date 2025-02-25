@@ -1,8 +1,23 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
-import type { Page, PageFrontmatter } from '@/types/page'
 
+interface PageFrontmatter {
+  title: string
+  description: string
+  date?: string
+  slug?: string
+}
+
+interface Page {
+  slug: string
+  content: string
+  frontmatter: PageFrontmatter
+}
+
+interface PageContentProps {
+  page: Page
+} 
 const pagesDirectory = path.join(process.cwd(), 'content/pages')
 
 export async function getAllPages(): Promise<Page[]> {

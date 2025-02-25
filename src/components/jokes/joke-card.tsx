@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
-declare interface JokeCardProps {
+interface JokeCardProps {
   joke: any
   onReaction: (jokeId: string, reaction: string) => Promise<void>
   onReport: (jokeId: number) => void

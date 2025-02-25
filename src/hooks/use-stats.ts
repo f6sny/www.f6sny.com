@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react"
-import { strapi } from '@strapi/client';
-
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
-
+import client from "@/lib/api"
 
 export function useStats() {
   const [stats, setStats] = useState<any | null>(null)

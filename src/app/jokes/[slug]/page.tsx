@@ -1,6 +1,5 @@
-import { Metadata } from 'next'
-import { JokePageContent } from '@/components/JokePageContent'
-import { generateMetadata } from "@/components/Metadata"
+import { JokePageContent } from '@/components/jokes/page-content'
+import { generateMetadata } from "@/components/app/metadata"
 
 export { generateMetadata }
 

@@ -1,8 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { strapi } from '@strapi/client';
-
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
+import client from "@/lib/api"
 
 
 interface StatsState {

@@ -3,17 +3,16 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
-import { toast } from "@/hooks/use-toast"
-import confetti from "canvas-confetti"
-import { JokeCard } from "@/components/JokeCard"
-import { UserHeader } from "@/components/UserHeader"
+import { JokeCard } from "@/components/jokes/joke-card"
+import { UserHeader } from "@/components/users/page-header"
 import { JokeSkeletonList } from "@/components/skeletons"
-import { api } from '@/lib/api'
-import { LoadingCard } from "@/components/LoadingCard"
+import client from '@/lib/api'
+import { LoadingCard } from "@/components/jokes/loading-card"
+import { JokeHandlers } from "@/lib/handlers"
 
 export function UserPageContent() {
   const { username } = useParams()
-  const [jokes, setJokes] = useState<Joke[]>([])
+  const [jokes, setJokes] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,12 +25,21 @@ export function UserPageContent() {
     try {
       setLoading(true)
       setError(null)
-      const data = await api.fetchUserJokes(username as string, { 
-        page: pageNum,
-        pageSize: 10
+      const data = await client.collection('jokes').find({ 
+        filters: {
+          author: {
+            username: {
+              $eq: username as string
+            }
+          }
+        },
+        pagination: {
+          page: pageNum,
+          pageSize: 10
+        }
       })
       
-      if (data.meta.pagination.page >= data.meta.pagination.pageCount) {
+      if (data.meta?.pagination?.page && data.meta?.pagination?.pageCount && data.meta?.pagination?.page >= data.meta?.pagination?.pageCount) {
         setHasMore(false)
       }
       return data
@@ -63,7 +71,7 @@ export function UserPageContent() {
         if (data && data.data.length > 0) {
           setJokes(prev => {
             const existingIds = new Set(prev.map(joke => joke.id))
-            const newJokes = data.data.filter((joke: Joke) => !existingIds.has(joke.id))
+            const newJokes = data.data.filter((joke: any) => !existingIds.has(joke.id))
             return [...prev, ...newJokes]
           })
           setPage(nextPage)
@@ -76,46 +84,47 @@ export function UserPageContent() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const data = await api.fetchUserInfo(username as string)
-        if (!data?.data?.[0]) {
-          setError('لم نتمكن من العثور على المستخدم المطلوب')
-          return
-        }
-        const user = data.data[0]
-        setUserInfo({
-          ...user,
-          jokes: {
-            count: data.meta?.pagination?.total || 0
-          }
+        const data = await client.collection('users').find({
+          filters: { username: { $eq: username as string } },
         })
+        
+        if (data.data.length > 0) {
+          // Get joke count
+          const jokesCount = await client.collection('jokes').find({
+            filters: {
+              author: {
+                username: {
+                  $eq: username as string
+                }
+              },
+              joke_status: {
+                $notIn: ['deleted', 'pending']
+              }
+            },
+            pagination: {
+              page: 1,
+              pageSize: 1
+            }
+          })
+          
+          setUserInfo({
+            ...data.data[0],
+            jokes: {
+              count: jokesCount.meta?.pagination?.total || 0
+            }
+          })
+        }
       } catch (error) {
         console.error("Error fetching user info:", error)
-        setError('Failed to fetch user info')
       }
     }
-
+    
     if (username) fetchUserInfo()
   }, [username])
 
-  const handleReaction = (jokeId: number, reaction: string) => {
-    if (reaction === "laugh") {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      })
-    }
-    toast({
-      title: "Reaction Recorded",
-      description: `You reacted with ${reaction} to the joke!`,
-    })
-  }
-
-  const handleReport = (jokeId: number) => {
-    toast({
-      title: "Joke Reported",
-      description: "Thank you for your feedback. We'll review this joke.",
-    })
+  const handleReaction = async (jokeId: string, reaction: string) => {
+    const updateState = JokeHandlers.getJokeListUpdater(setJokes);
+    await JokeHandlers.handleReaction(jokeId, reaction, updateState);
   }
 
   if (loading && !initialLoadDone) {
@@ -143,7 +152,7 @@ export function UserPageContent() {
             key={`joke-${joke.id}-${index}`}
             joke={joke}
             onReaction={handleReaction}
-            onReport={handleReport}
+            onReport={JokeHandlers.handleReport}
           />
         ))}
       </div>

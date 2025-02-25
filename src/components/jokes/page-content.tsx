@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { JokeCard } from "@/components/JokeCard"
-import { toast } from "@/hooks/use-toast"
-import confetti from "canvas-confetti"
-import { Comments } from "@/components/Comments"
-import { api } from '@/lib/api'
+import { JokeCard } from "@/components/jokes/joke-card"
+import { Comments } from "@/components/comments/section"
+import client from '@/lib/api'
+import { JokeHandlers } from "@/lib/handlers"
 
 export function JokePageContent() {
   const { slug } = useParams()
-  const [joke, setJoke] = useState<Joke | null>(null)
+  const [joke, setJoke] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,13 +17,14 @@ export function JokePageContent() {
     const fetchJoke = async () => {
       try {
         setLoading(true)
-        const data = await api.fetchJokes({ 
-          filters: { slug: { $eq: slug } },
-          page: 1,
-          pageSize: 1
+        const data = await client.collection('jokes').find({ 
+          filters: { slug: { $eq: decodeURIComponent(slug as string) } },
+          pagination: { 
+            page: 1,
+            pageSize: 1
+          }
         })
         
-
         if (data.data.length === 0) {
           setError('لم نتمكن من العثور على النكتة المطلوبة')
           return
@@ -46,25 +46,9 @@ export function JokePageContent() {
     if (slug) fetchJoke()
   }, [slug])
 
-  const handleReaction = (jokeId: number, reaction: string) => {
-    if (reaction === "laugh") {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      })
-    }
-    toast({
-      title: "Reaction Recorded",
-      description: `You reacted with ${reaction} to the joke!`,
-    })
-  }
-
-  const handleReport = (jokeId: number) => {
-    toast({
-      title: "Joke Reported",
-      description: "Thank you for your feedback. We'll review this joke.",
-    })
+  const handleReaction = async (jokeId: string, reaction: string) => {
+    const updateState = JokeHandlers.getSingleJokeUpdater(setJoke);
+    await JokeHandlers.handleReaction(jokeId, reaction, updateState);
   }
 
   if (loading) {
@@ -97,7 +81,7 @@ export function JokePageContent() {
       <JokeCard 
         joke={joke}
         onReaction={handleReaction}
-        onReport={handleReport}
+        onReport={JokeHandlers.handleReport}
       />
       <Comments />
     </div>
