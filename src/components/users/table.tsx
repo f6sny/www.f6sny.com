@@ -32,10 +32,10 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChevronDown } from "lucide-react"
-import { api } from '@/lib/api'
 import { LoadingCard } from "@/components/jokes/loading-card"
+import client from "@/lib/api"
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "avatar",
     header: "",
@@ -111,7 +111,7 @@ export const columns: ColumnDef<User>[] = [
 ]
 
 export function UsersTable() {
-  const [users, setUsers] = React.useState<User[]>([])
+  const [users, setUsers] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
   const [pageCount, setPageCount] = React.useState(0)
   const [{ pageIndex, pageSize }, setPagination] = React.useState({
@@ -125,13 +125,17 @@ export function UsersTable() {
     const fetchUsers = async () => {
       try {
         setLoading(true)
-        const response = await api.fetchUsers({
-          page: pageIndex + 1,
-          pageSize,
-          search,
+        const response = await client.collection("users").find({
+          pagination: {
+            page: pageIndex + 1,
+            pageSize,
+          },
+          filters: {
+            search,
+          },
         })
         setUsers(response.data)
-        setPageCount(response.meta.pagination.pageCount)
+        setPageCount(response.meta?.pagination?.pageCount || 0)
       } catch (error) {
         console.error('Failed to fetch users:', error)
       } finally {
