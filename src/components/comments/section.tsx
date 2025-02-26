@@ -11,6 +11,21 @@ import {
 } from "@/components/ui/dialog"
 import { TimeAgo } from "@/components/ui/time-ago"
 
+declare interface Comment {
+  id: number
+  content: string
+  author: {
+    name: string
+    avatar?: string
+  }
+  createdAt: string
+  likes: number
+}
+
+declare interface CommentsProps {
+  jokeId?: number
+}   
+
 const dummyComments: Comment[] = [
   {
     id: 1,
