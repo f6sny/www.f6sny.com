@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -17,6 +17,7 @@ import { useState } from "react"
 import { AddJokeModal } from "@/components/jokes/add-joke-modal"
 import { Plus, Tags } from "lucide-react"
 import { useTags } from "@/hooks/use-tags"
+import { cn } from "@/lib/utils"
 
 export default function Navbar() {
   const isLoggedIn = true // Replace with actual authentication logic
@@ -44,7 +45,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-4">
               <Button 
                 onClick={() => setAddJokeOpen(true)}
-                className="gap-2 bg-yellow-600 hover:bg-yellow-700"
+                className="gap-2 bg-yellow-400 text-black hover:bg-yellow-500"
               >
                 
                 أضف نكتة
@@ -53,7 +54,7 @@ export default function Navbar() {
               {/* Tags Dropdown */}
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="outline" className="gap-2">
                   التصنيفات
                   <Tags className="w-4 h-4" />
                 </Button>
@@ -85,7 +86,10 @@ export default function Navbar() {
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-              <Link title="شارك بتقييم النكت قبل الظهور" href="/" className="text-gray-600 hover:text-gray-800">
+              <Link 
+                title="شارك بتقييم النكت قبل الظهور" 
+                href="/" 
+                className={cn(buttonVariants({ variant: "ghost" }),`text-gray-600 hover:text-gray-800`)}>
                 قيّم
               </Link>
             </div>

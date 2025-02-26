@@ -48,9 +48,9 @@ export default async function RootLayout({
         <StoreHydrator />
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar customPages={customPages} />
-          <div className="flex flex-col md:flex-row min-h-screen w-full bg-red-200">
+          <div className="flex flex-col md:flex-row min-h-screen w-full">
             
-            <div className="flex-1 flex flex-col w-full bg-yellow-200">
+            <div className="flex-1 flex flex-col w-full bg-neutral-100">
             
               <Navbar />
               

@@ -31,6 +31,9 @@ export function UserPageContent() {
             username: {
               $eq: username as string
             }
+          },
+          joke_status: {
+            $notIn: ['deleted', 'pending']
           }
         },
         pagination: {
@@ -140,7 +143,7 @@ export function UserPageContent() {
       {userInfo && (
         <UserHeader
           username={userInfo.username}
-          name={`${userInfo.first_name} ${userInfo.last_name}`}
+          name={`${userInfo.display_name}`}
           bio={userInfo.biography}
           avatar={userInfo.avatar}
           jokeCount={userInfo.jokes.count}
