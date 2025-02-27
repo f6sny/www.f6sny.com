@@ -1,6 +1,6 @@
 import { strapi } from '@strapi/client';
 
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
+const client = strapi({ baseURL: process.env.API_URL || 'http://localhost:1337/api' });
 
 export default client;
 

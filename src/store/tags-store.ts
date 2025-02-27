@@ -1,8 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { strapi } from '@strapi/client';
+import client from '@/lib/api'
 
-const client = strapi({ baseURL: 'http://localhost:1337/api' });
 
 interface TagsState {
   tags: any[]

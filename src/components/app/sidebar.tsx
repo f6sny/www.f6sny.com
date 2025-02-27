@@ -124,8 +124,8 @@ export function AppSidebar({ customPages }: SidebarContentProps) {
                                     <SidebarMenuItem>
                                         <SidebarMenuButton asChild>
                                             <div className="flex items-center ">
-                                                <span className="me-1/3">{stats?.total_jokes - stats?.deleted_jokes}</span>
-                                                نكتة نشطة
+                                                <span className="me-1/3">{stats?.total_jokes}</span>
+                                                نكتة 
                                             </div>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
