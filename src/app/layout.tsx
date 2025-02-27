@@ -40,6 +40,8 @@ export default async function RootLayout({
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
+  console.warn('process.env.API_URL', process.env.API_URL)
+  console.warn('process.env.NODE_ENV', process.env.NODE_ENV)
   const customPages = await getCustomPages()
 
   return (
