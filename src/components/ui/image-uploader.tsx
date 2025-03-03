@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Cropper from 'react-easy-crop'
-import { Point, Area } from 'react-easy-crop/types'
+import { Point, Area } from 'react-easy-crop'
 import { Slider } from "@/components/ui/slider"
 import { useAuthStore } from "@/store/auth-store"
 import { toast } from "@/hooks/use-toast"
