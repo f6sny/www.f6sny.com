@@ -9,6 +9,8 @@ import { JokeSkeletonList } from "@/components/skeletons"
 import client from '@/lib/api'
 import { LoadingCard } from "@/components/jokes/loading-card"
 import { JokeHandlers } from "@/lib/handlers"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function UserPageContent() {
   const { username } = useParams()
@@ -20,6 +22,7 @@ export function UserPageContent() {
   const { ref, inView } = useInView()
   const [hasMore, setHasMore] = useState(true)
   const [userInfo, setUserInfo] = useState<any>(null)
+  const [activeTab, setActiveTab] = useState("jokes")
 
   const fetchJokes = async (pageNum: number) => {
     try {
@@ -42,7 +45,9 @@ export function UserPageContent() {
         }
       })
       
-      if (data.meta?.pagination?.page && data.meta?.pagination?.pageCount && data.meta?.pagination?.page >= data.meta?.pagination?.pageCount) {
+      if (data.data.length === 0 || 
+          (data.meta?.pagination?.page && data.meta?.pagination?.pageCount && 
+           data.meta?.pagination?.page >= data.meta?.pagination?.pageCount)) {
         setHasMore(false)
       }
       return data
@@ -60,6 +65,9 @@ export function UserPageContent() {
       const data = await fetchJokes(1)
       if (data) {
         setJokes(data.data)
+        if (data.data.length === 0) {
+          setHasMore(false)
+        }
         setInitialLoadDone(true)
       }
     }
@@ -68,7 +76,7 @@ export function UserPageContent() {
 
   useEffect(() => {
     const loadMoreJokes = async () => {
-      if (inView && !loading && initialLoadDone) {
+      if (inView && !loading && initialLoadDone && activeTab === "jokes") {
         const nextPage = page + 1
         const data = await fetchJokes(nextPage)
         if (data && data.data.length > 0) {
@@ -82,13 +90,14 @@ export function UserPageContent() {
       }
     }
     loadMoreJokes()
-  }, [inView, loading, page, initialLoadDone, username])
+  }, [inView, loading, page, initialLoadDone, username, activeTab])
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const data = await client.collection('users').find({
           filters: { username: { $eq: username as string } },
+          populate: ['avatar']
         })
         
         if (data.data.length > 0) {
@@ -130,6 +139,15 @@ export function UserPageContent() {
     await JokeHandlers.handleReaction(jokeId, reaction, updateState);
   }
 
+  // Reset pagination when switching tabs
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (value === "jokes") {
+      setPage(1);
+      setHasMore(true);
+    }
+  };
+
   if (loading && !initialLoadDone) {
     return <JokeSkeletonList />
   }
@@ -144,26 +162,83 @@ export function UserPageContent() {
         <UserHeader
           username={userInfo.username}
           name={`${userInfo.display_name}`}
-          bio={userInfo.biography}
+          biography={userInfo.biography}
           avatar={userInfo.avatar}
           jokeCount={userInfo.jokes.count}
         />
       )}
-      <div className="space-y-6">
-        {jokes.map((joke, index) => (
-          <JokeCard
-            key={`joke-${joke.id}-${index}`}
-            joke={joke}
-            onReaction={handleReaction}
-            onReport={JokeHandlers.handleReport}
-          />
-        ))}
-      </div>
-      <div ref={hasMore ? ref : null} className="h-10">
-        {loading && <LoadingCard />}
-        {!hasMore && jokes.length > 0 && (
-          <p className="text-center text-gray-500">لقد وصلت إلى نهاية النكت لهذا المستخدم</p>
-        )}
+      
+      <div className="mt-6">
+        <Tabs dir="rtl" defaultValue="jokes" value={activeTab} onValueChange={handleTabChange}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="jokes" className="flex items-center justify-center gap-2">
+              <span>النكات</span>
+              {userInfo && (
+                <span className="inline-flex items-center justify-center rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-800">
+                  {userInfo.jokes.count}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="comments" className="flex items-center justify-center gap-2">
+              <span>التعليقات</span>
+              <span className="inline-flex items-center justify-center rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-800">
+                0
+              </span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="jokes" className="mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>النكات</CardTitle>
+                <CardDescription>
+                التي قام {userInfo?.display_name || userInfo?.username || username} بنشرها
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {jokes.length > 0 ? (
+                  <div className="space-y-6">
+                    {jokes.map((joke, index) => (
+                      <JokeCard
+                        key={`joke-${joke.id}-${index}`}
+                        joke={joke}
+                        onReaction={handleReaction}
+                        onReport={JokeHandlers.handleReport}
+                      />
+                    ))}
+                    
+                    <div ref={hasMore ? ref : null} className="h-10">
+                      {loading && <LoadingCard />}
+                      {!hasMore && jokes.length > 0 && (
+                        <p className="text-center text-gray-500">لقد وصلت إلى نهاية النكت لهذا المستخدم</p>
+                      )}
+                    </div>
+                  </div>
+                ) : initialLoadDone && !loading ? (
+                  <div className="text-center py-10 text-gray-500">
+                    لم يشارك هذا المستخدم أي نكات بعد
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="comments" className="mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>التعليقات</CardTitle>
+                <CardDescription>
+                  التي قام {userInfo?.display_name || userInfo?.username || username} بنشرها
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-10 text-gray-500">
+                  لم يشارك {userInfo?.display_name || userInfo?.username || username} بأي تعليقات بعد.
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

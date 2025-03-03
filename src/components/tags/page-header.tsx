@@ -9,7 +9,7 @@ interface TagHeaderProps {
 
 export function TagHeader({ title, description, count, hexColor }: TagHeaderProps) {
   return (
-    <div className="mb-8 p-4 bg-white rounded-lg shadow-sm">
+    <div className="mb-8">
       <div className="flex items-center gap-3 mb-2">
         <h1 className="text-2xl font-bold">
           <Badge 

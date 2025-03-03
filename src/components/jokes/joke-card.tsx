@@ -57,7 +57,7 @@ export function JokeCard({ joke, onReaction, onReport }: JokeCardProps) {
 						>
 							<Avatar className="cursor-pointer hover:opacity-80">
 								<AvatarImage
-									src={joke.author?.avatar || "/avatars/default.png"}
+									src={joke.author?.avatar?.formats?.thumbnail?.url || "/avatars/default.png"}
 								/>
 								<AvatarFallback>
 									{joke.author?.display_name?.[0] || "؟"}

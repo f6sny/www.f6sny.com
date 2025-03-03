@@ -38,14 +38,6 @@ export function TagPageContent() {
           joke_status: {
             $notIn: ['deleted', 'pending']
           }
-        },
-        populate:{
-          tags:{
-            count:false
-          },
-          votes:{
-            count:false
-          }
         }
       })
       

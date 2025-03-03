@@ -35,15 +35,8 @@ export function HomeContent() {
           joke_status: {
             $notIn: ['deleted', 'pending']
           }
-        },
-        populate: {
-          votes: {
-            count: false
-          },
-          tags: {
-            count:false
-          }
         }
+     
       })
 
       console.log('jokes', data.data)
