@@ -18,6 +18,7 @@ import { Search } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useAuthStore } from "@/store/auth-store"
 import { toast } from "@/hooks/use-toast"
+import { AuthDialog } from "@/components/auth/auth-dialog"
 
 export default function Navbar() {
   const searchParams = useSearchParams()
@@ -94,14 +95,7 @@ export default function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex gap-2">
-                <Button variant="outline" asChild>
-                  <Link href="/auth/login">تسجيل الدخول</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/auth/register">إنشاء حساب</Link>
-                </Button>
-              </div>
+              <AuthDialog />
             )}
           </div>
         </div>

@@ -10,6 +10,10 @@ import { cookies } from "next/headers"
 import { cn } from "@/lib/utils";
 import { AppSidebar } from "@/components/app/sidebar";
 import { getAllPages } from '@/lib/pages'
+import { ProfileCompletionDialog } from "@/components/auth/profile-completion-dialog"
+import { WelcomeDialog } from "@/components/auth/welcome-dialog"
+import DirectionProvider from "@/components/providers/direction";
+import { AddJokeButton } from "@/components/jokes/add-joke-button"
 
 const rubik = Rubik({ 
   subsets: ["latin"],
@@ -46,6 +50,7 @@ export default async function RootLayout({
     <html lang="ar" dir="rtl">
       <body className={cn(rubik.className, "bg-gray-50")}>
         <StoreHydrator />
+        <DirectionProvider>
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar customPages={customPages} />
           <div className="flex flex-col md:flex-row min-h-screen w-full">
@@ -59,6 +64,10 @@ export default async function RootLayout({
           </div>
         </SidebarProvider>
         <Toaster />
+        <ProfileCompletionDialog />
+        <WelcomeDialog />
+        <AddJokeButton />
+        </DirectionProvider>
       </body>
     </html>
   )

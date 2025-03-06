@@ -27,7 +27,6 @@ export const useTagsStore = create<TagsState>()(
             },
           })
 
-          console.log(data.data)
           set({ tags: data.data, loading: false })
         } catch (error) {
           set({ error: 'Failed to fetch tags', loading: false })

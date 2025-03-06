@@ -9,8 +9,8 @@ export function useStats() {
     const fetchStats = async () => {
       try {
         const data = await client.fetch('globalcall/counters', { method: 'GET' });
-        console.log('stats', await data.json())
-        setStats(await data.json())
+        const stats = await data.json()
+        setStats(stats)
       } catch (error) {
         console.error('Failed to fetch stats:', error)
       } finally {

@@ -10,7 +10,8 @@ import {
 	Tags,
 	Info,
 	BarChart,
-	FileText
+	FileText,
+	ShieldAlert
 } from "lucide-react";
 
 import {
@@ -35,6 +36,9 @@ import {
 } from "../ui/collapsible";
 import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
+import { usePendingCount } from "@/hooks/use-pending-count"
+import { Badge } from "@/components/ui/badge"
+import { useAuthStore } from "@/store/auth-store"
 
 // Menu items.
 
@@ -50,6 +54,8 @@ interface SidebarContentProps {
 export function AppSidebar({ customPages }: SidebarContentProps) {
 	const { tags, loading: tagsLoading } = useTagsStore();
 	const { stats, loading: statsLoading } = useStatsStore();
+	const { count: pendingCount } = usePendingCount()
+	const { user } = useAuthStore()
 	
 	// Function to calculate font size based on joke count
 	const getTagSize = (count: number) => {
@@ -64,6 +70,8 @@ export function AppSidebar({ customPages }: SidebarContentProps) {
 		
 		return Math.max(min, Math.min(max, size)); // Clamp between min and max
 	};
+	
+	const canModerate = true
 	
 	return (
 		<Sidebar side="right">
@@ -203,6 +211,21 @@ export function AppSidebar({ customPages }: SidebarContentProps) {
 							</CollapsibleContent>
 						</SidebarGroup>
 					</Collapsible>
+
+					{canModerate && (
+						<SidebarMenuItem>
+							<SidebarMenuButton asChild>
+								<Link href="/moderate">
+									مراجعة المحتوى
+							{pendingCount > 0 && (
+				<Badge variant="destructive" className="me-auto px-2 py-0.5 text-xs">
+					{pendingCount}
+				</Badge>
+								)}
+							</Link>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+					)}
 				</Collapsible>
 			</SidebarContent>
 			<SidebarFooter>

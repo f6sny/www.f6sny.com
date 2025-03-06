@@ -68,7 +68,7 @@ export function ResetPasswordForm() {
         description: "يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة",
       })
       
-      router.push("/auth/login")
+      router.push("/")
     } catch (error) {
       console.error("Reset password error:", error)
       toast({

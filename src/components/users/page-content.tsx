@@ -11,9 +11,13 @@ import { LoadingCard } from "@/components/jokes/loading-card"
 import { JokeHandlers } from "@/lib/handlers"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useAuthStore } from "@/store/auth-store"
+import { ProfileCompleteness } from "@/components/account/profile-completeness"
 
 export function UserPageContent() {
   const { username } = useParams()
+  const { user: currentUser } = useAuthStore()
+  const [user, setUser] = useState<any | null>(null)
   const [jokes, setJokes] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -21,8 +25,10 @@ export function UserPageContent() {
   const [initialLoadDone, setInitialLoadDone] = useState(false)
   const { ref, inView } = useInView()
   const [hasMore, setHasMore] = useState(true)
-  const [userInfo, setUserInfo] = useState<any>(null)
   const [activeTab, setActiveTab] = useState("jokes")
+
+  // Check if this is the user's own profile
+  const isOwnProfile = currentUser?.username === username
 
   const fetchJokes = async (pageNum: number) => {
     try {
@@ -119,7 +125,7 @@ export function UserPageContent() {
             }
           })
           
-          setUserInfo({
+          setUser({
             ...data.data[0],
             jokes: {
               count: jokesCount.meta?.pagination?.total || 0
@@ -156,26 +162,31 @@ export function UserPageContent() {
     return <div className="text-center text-red-500 p-4">{error}</div>
   }
 
+  if (!user) {
+    return <div className="text-center p-4">المستخدم غير موجود</div>
+  }
+
   return (
     <div>
-      {userInfo && (
-        <UserHeader
-          username={userInfo.username}
-          name={`${userInfo.display_name}`}
-          biography={userInfo.biography}
-          avatar={userInfo.avatar}
-          jokeCount={userInfo.jokes.count}
-        />
-      )}
+      {/* Add ProfileCompleteness component only if it's the user's own profile */}
+      {isOwnProfile && <ProfileCompleteness />}
+      
+      <UserHeader
+        username={user.username}
+        name={user.display_name || user.username}
+        biography={user.biography || ""}
+        avatar={user.avatar}
+        jokeCount={user.jokes.count}
+      />
       
       <div className="mt-6">
         <Tabs dir="rtl" defaultValue="jokes" value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="jokes" className="flex items-center justify-center gap-2">
               <span>النكات</span>
-              {userInfo && (
+              {user && (
                 <span className="inline-flex items-center justify-center rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-800">
-                  {userInfo.jokes.count}
+                  {user.jokes.count}
                 </span>
               )}
             </TabsTrigger>
@@ -192,7 +203,7 @@ export function UserPageContent() {
               <CardHeader>
                 <CardTitle>النكات</CardTitle>
                 <CardDescription>
-                التي قام {userInfo?.display_name || userInfo?.username || username} بنشرها
+                التي قام {user.display_name || user.username} بنشرها
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -228,12 +239,12 @@ export function UserPageContent() {
               <CardHeader>
                 <CardTitle>التعليقات</CardTitle>
                 <CardDescription>
-                  التي قام {userInfo?.display_name || userInfo?.username || username} بنشرها
+                  التي قام {user.display_name || user.username} بنشرها
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-10 text-gray-500">
-                  لم يشارك {userInfo?.display_name || userInfo?.username || username} بأي تعليقات بعد.
+                  لم يشارك {user.display_name || user.username} بأي تعليقات بعد.
                 </div>
               </CardContent>
             </Card>

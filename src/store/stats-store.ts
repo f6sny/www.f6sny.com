@@ -12,16 +12,19 @@ interface StatsState {
 
 export const useStatsStore = create<StatsState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       stats: null,
       loading: false,
       error: null,
       fetchStats: async () => {
+        if (get().stats !== null && !get().loading) {
+          return;
+        }
+        
+        set({ loading: true, error: null })
         try {
-          set({ loading: true, error: null })
           const data = await client.fetch('globalcall/counters', { method: 'GET' });
           const jsonData = await data.json();
-          console.log('stats', jsonData)
           set({ stats: jsonData, loading: false })
         } catch (error) {
           set({ error: 'Failed to fetch stats', loading: false })
@@ -32,6 +35,7 @@ export const useStatsStore = create<StatsState>()(
     {
       name: 'stats-storage',
       skipHydration: true,
+      partialize: (state) => ({ stats: state.stats }),
     }
   )
 ) 

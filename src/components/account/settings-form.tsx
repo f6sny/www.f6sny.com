@@ -34,6 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { ProfileCompleteness } from "@/components/account/profile-completeness"
 
 const profileFormSchema = z.object({
   username: z.string().min(3, {
@@ -303,6 +304,7 @@ export function AccountSettingsForm() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <ProfileCompleteness />
 
             <Form {...profileForm}>
               <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-6">

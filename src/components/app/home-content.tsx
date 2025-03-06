@@ -39,8 +39,6 @@ export function HomeContent() {
      
       })
 
-      console.log('jokes', data.data)
-
     
       if (data.meta.pagination?.page && data.meta.pagination?.pageCount && data.meta.pagination?.page >= data.meta.pagination?.pageCount) {
         setHasMore(false)
@@ -60,7 +58,6 @@ export function HomeContent() {
     const loadInitialJokes = async () => {
       const data = await fetchJokes(1)
       if (data) {
-        console.log(data.data)
         setJokes(data.data as [])
         setInitialLoadDone(true)
       }

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Flag, Laugh, Meh, Frown, Link2, Loader2 } from "lucide-react";
+import { Flag, Laugh, Meh, Frown, Link2, Loader2, Clock } from "lucide-react";
 import { TimeAgo } from "@/components/ui/time-ago";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ interface JokeCardProps {
 
 export function JokeCard({ joke, onReaction, onReport }: JokeCardProps) {
 	const [loadingReaction, setLoadingReaction] = useState<string | null>(null);
+	const isPending = joke.joke_status === "pending";
 
 	const getButtonVariant = (voteType: string) => {
 		if (joke.hasVoted && joke.userVote?.value === voteType) {
@@ -47,76 +48,96 @@ export function JokeCard({ joke, onReaction, onReport }: JokeCardProps) {
 	};
 
 	return (
-		<Card  className="w-full hover:shadow-lg transition-shadow duration-200">
-			<CardHeader>
+		<Card className="w-full hover:shadow-lg transition-shadow duration-200">
+			<CardHeader className="pb-2">
+				{isPending && (
+					<div className="mb-2">
+						<Badge 
+							variant="outline" 
+							className="bg-amber-50 text-amber-700 border-amber-200 flex items-center gap-1 w-fit"
+						>
+							<Clock className="h-3 w-3" />
+							<span>في انتظار الموافقة</span>
+						</Badge>
+					</div>
+				)}
 				<CardTitle>
 					<div className="flex items-center gap-2 justify-between">
-						<Link
-							className="group flex items-center gap-2 text-base"
-							href={`/users/${joke.author?.username || "visitor"}`}
-						>
-							<Avatar className="cursor-pointer hover:opacity-80">
-								<AvatarImage
-									src={joke.author?.avatar?.formats?.thumbnail?.url || "/avatars/default.png"}
-								/>
-								<AvatarFallback>
-									{joke.author?.display_name?.[0] || "؟"}
-								</AvatarFallback>
-							</Avatar>
-							<div className="flex flex-col">
-								<span className="font-medium group-hover:underline">
-									{joke.author?.first_name || "زائر"}
-								</span>
-								<span
-									dir="ltr"
-									className="text-sm font-normal text-gray-500 group-hover:underline"
-								>
-									@{joke.author?.username || "visitor"}
-								</span>
-							</div>
-						</Link>
-						<div className="flex items-center gap-2">
+						<div className="text-base flex items-center gap-2 group">
+							<Link
+								className=" flex items-center gap-2    "
+								href={`/users/${joke.author?.username || "visitor"}`}
+							>
+								<Avatar className="cursor-pointer hover:opacity-80 h-6 w-6">
+									<AvatarImage
+										src={
+											joke.author?.avatar?.formats?.thumbnail?.url ||
+											"/avatars/default.png"
+										}
+									/>
+									<AvatarFallback>
+										{joke.author?.display_name?.[0] || "؟"}
+									</AvatarFallback>
+								</Avatar>
+								<div className="flex gap-1 items-center font-normal">
+									<span className="group-hover:underline">
+										{joke.author?.first_name || "زائر"}
+									</span>
+									<span
+										dir="ltr"
+										className="text-gray-500 group-hover:underline"
+									>
+										@{joke.author?.username || "visitor"}
+									</span>
+								</div>
+							</Link>
+              <span className="text-sm font-normal text-gray-500">
+                -
+              </span>
 							<TimeAgo
 								date={joke.updatedAt}
 								className="text-sm font-normal text-gray-500"
-              />
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={`/jokes/${joke.slug}`}>
-                  <Link2 className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+							/>
+						</div>
+
+						<div className="flex items-center gap-2">
+							<Button variant="ghost" size="sm" asChild>
+								<Link href={`/jokes/${joke.slug}`}>
+									<Link2 className="h-4 w-4" />
+								</Link>
+							</Button>
+						</div>
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="">
-      <p
-							className="whitespace-pre-line"
-							dangerouslySetInnerHTML={{ __html: joke.content }}
-						/>
-						<div className="flex flex-wrap gap-1 mt-2">
-							{joke.tags?.map((tag: any) => (
-								<Link
-									href={`/tags/${tag.slug}`}
-									key={`joke-${joke.documentId}-tag-${tag.documentId}`}
-								>
-									<Badge
-										variant="secondary"
-										className="font-normal rounded-md border-none"
-
-										style={{
-											backgroundColor: tag.hex_color
-												? `${tag.hex_color}10`
-												: undefined,
-											color: tag.hex_color || undefined,
-										}}
-									>
-										{tag.title}
-									</Badge>
-								</Link>
-							))}
-						</div>
+			<CardContent>
+				<p
+					className="whitespace-pre-line"
+					dangerouslySetInnerHTML={{ __html: joke.content }}
+				/>
+				<div className="flex flex-wrap gap-1 mt-2">
+					{joke.tags?.map((tag: any) => (
+						<Link
+							href={`/tags/${tag.slug}`}
+							key={`joke-${joke.documentId}-tag-${tag.documentId}`}
+						>
+							<Badge
+								variant="secondary"
+								className="font-normal rounded-md border-none"
+								style={{
+									backgroundColor: tag.hex_color
+										? `${tag.hex_color}10`
+										: undefined,
+									color: tag.hex_color || undefined,
+								}}
+							>
+								{tag.title}
+							</Badge>
+						</Link>
+					))}
+				</div>
 			</CardContent>
+			{!isPending && (
 			<CardFooter className="flex flex-wrap justify-between gap-2">
 				<div className="flex flex-wrap gap-2">
 					<Button
@@ -181,6 +202,7 @@ export function JokeCard({ joke, onReaction, onReport }: JokeCardProps) {
 					<Flag className="mr-2 h-4 w-4" />
 				</Button>
 			</CardFooter>
+			)}
 		</Card>
 	);
 }
