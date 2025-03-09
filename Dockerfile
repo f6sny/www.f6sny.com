@@ -1,17 +1,50 @@
-FROM node:lts-alpine as builder
+FROM node:18-alpine as base
+RUN apk add --no-cache g++ make py3-pip libc6-compat
+WORKDIR /app
 
-# create destination directory
-RUN mkdir -p /usr/src/nuxt-app
-WORKDIR /usr/src/nuxt-app
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# copy the app, note .dockerignore
-COPY . /usr/src/nuxt-app/
-RUN npm install
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+EXPOSE 3000
 
-RUN npm run build
+FROM base as builder
+WORKDIR /app
 
-# expose 5050 on container
-EXPOSE 5050
+# Define build arguments
+ARG NEXT_PUBLIC_API_URL
+ARG API_URL
 
-# start the app
-CMD [ "npm", "start" ]
+# Set as environment variables for the build process
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV API_URL=$API_URL
+
+COPY . .
+# Install dependencies and build
+RUN pnpm install --frozen-lockfile
+RUN pnpm build
+
+FROM base as production
+WORKDIR /app
+
+ENV NODE_ENV=production
+# Runtime environment variables (can be overridden at container start)
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV API_URL=$API_URL
+
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+USER nextjs
+
+# Copy built assets and necessary files
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/content ./content
+
+CMD pnpm start
