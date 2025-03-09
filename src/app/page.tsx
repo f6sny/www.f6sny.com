@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
+  console.log('NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
+  console.log('API_URL', process.env.API_URL)
   return <HomeContent />
 }
 
