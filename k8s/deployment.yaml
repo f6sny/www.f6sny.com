@@ -16,7 +16,7 @@
         spec:
           containers:
           - name: f6sny-next-frontend
-            image: ghcr.io/f6sny/www.f6sny.com-dev:latest
+            image: ghcr.io/f6sny/www.f6sny.com:latest
             ports:
               - containerPort: 3000
             envFrom:
