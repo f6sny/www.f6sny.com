@@ -20,6 +20,10 @@ FROM base as production
 WORKDIR /app
 
 ENV NODE_ENV=production
+# Runtime environment variables (can be overridden at container start)
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV API_URL=$API_URL
+
 # Install production dependencies only
 RUN pnpm install --frozen-lockfile --prod
 
