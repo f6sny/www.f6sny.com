@@ -11,6 +11,15 @@ EXPOSE 3000
 
 FROM base as builder
 WORKDIR /app
+
+# Define build arguments
+ARG NEXT_PUBLIC_API_URL
+ARG API_URL
+
+# Set as environment variables for the build process
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV API_URL=$API_URL
+
 COPY . .
 # Install dependencies and build
 RUN pnpm install --frozen-lockfile
