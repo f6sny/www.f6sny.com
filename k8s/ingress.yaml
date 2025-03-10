@@ -13,7 +13,7 @@
             - www.f6sny.com
           secretName: f6sny-next-frontend-tls
       rules:
-      - host: wwww.f6sny.com
+      - host: www.f6sny.com
         http:
           paths:
             - path: /
