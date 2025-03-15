@@ -3,17 +3,17 @@ name: Create and publish a Docker image
 on:
   push:
     branches:
-      - next_js
+      - development
   pull_request:
     branches:
-      - next_js
+      - development
 
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-dev
-  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-  API_URL: ${{ secrets.API_URL }}
+  NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+  API_URL: ${{ vars.API_URL }}
 
 jobs:
   build-and-push-image:
