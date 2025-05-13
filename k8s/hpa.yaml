@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: f6sny-next-frontend-hpa
-  namespace: your-namespace
+  namespace: f6sny
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

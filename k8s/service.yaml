@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: f6sny-next-frontend
+  namespace: f6sny
 spec:
   selector:
     app: f6sny-next-frontend

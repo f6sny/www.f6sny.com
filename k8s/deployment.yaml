@@ -2,6 +2,7 @@
     kind: Deployment
     metadata:
       name: f6sny-next-frontend
+      namespace: f6sny
     spec:
       selector:
         matchLabels:
